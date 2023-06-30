@@ -1,0 +1,11 @@
+
+ahora que ya hicimos git push origin main 
+
+vamos a cargar este archivo al repositorio de GitHub
+
+y vamos a ir al bash a hacer el comando:
+
+git push origin main
+
+y ahi noestro repositorio local va a quedar actualizado tal cual como esta 
+la version en el repositorio remoto de GitHub

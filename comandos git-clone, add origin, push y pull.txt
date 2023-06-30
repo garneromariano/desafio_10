@@ -1,0 +1,134 @@
+
+
+clonamos un repositorio desde github y creamos un repositorio remoto origin:
+
+
+
+Servidor@SERVIDOR-PC MINGW64 /i/mariano pc/escritori/PROGRAMACION/INFORMATORIO 2023/Semana 10 - Introduccion a Django/proyecto2023/clone_origin_push_pull_desafio_10
+$ git clone https://github.com/garneromariano/desafio_10.git
+Cloning into 'desafio_10'...
+remote: Enumerating objects: 22, done.
+remote: Counting objects: 100% (22/22), done.
+remote: Compressing objects: 100% (18/18), done.
+remote: Total 22 (delta 2), reused 0 (delta 0), pack-reused 0
+Receiving objects: 100% (22/22), 7.65 KiB | 7.65 MiB/s, done.
+Resolving deltas: 100% (2/2), done.
+
+
+Servidor@SERVIDOR-PC MINGW64 /i/mariano pc/escritori/PROGRAMACION/INFORMATORIO 2023/Semana 10 - Introduccion a Django/proyecto2023/clone_origin_push_pull_desafio_10
+$ cd desafio_10
+
+Servidor@SERVIDOR-PC MINGW64 /i/mariano pc/escritori/PROGRAMACION/INFORMATORIO 2023/Semana 10 - Introduccion a Django/proyecto2023/clone_origin_push_pull_desafio_10/desafio_10 (main)
+$ git remote add origin https://github.com/garneromariano/desafio_10.git
+error: remote origin already exists.
+
+Servidor@SERVIDOR-PC MINGW64 /i/mariano pc/escritori/PROGRAMACION/INFORMATORIO 2023/Semana 10 - Introduccion a Django/proyecto2023/clone_origin_push_pull_desafio_10/desafio_10 (main)
+$ git remote
+origin
+
+(ya lo habia creado al repositorio origin)
+
+
+
+Servidor@SERVIDOR-PC MINGW64 /i/mariano pc/escritori/PROGRAMACION/INFORMATORIO 2023/Semana 10 - Introduccion a Django/proyecto2023/repositorio-blog (master)
+$ git status
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        comandos git-clonamos y hicimos un origin.txt
+        desafio_10/
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+
+
+Servidor@SERVIDOR-PC MINGW64 /i/mariano pc/escritori/PROGRAMACION/INFORMATORIO 2023/Semana 10 - Introduccion a Django/proyecto2023/repositorio-blog (master)
+$ git add .
+warning: adding embedded git repository: desafio_10
+hint: You've added another git repository inside your current repository.
+hint: Clones of the outer repository will not contain the contents of
+hint: the embedded repository and will not know how to obtain it.
+hint: If you meant to add a submodule, use:
+hint:
+hint:   git submodule add <url> desafio_10
+hint:
+hint: If you added this path by mistake, you can remove it from the
+hint: index with:
+hint:
+hint:   git rm --cached desafio_10
+hint:
+hint: See "git help submodule" for more information.
+
+
+Servidor@SERVIDOR-PC MINGW64 /i/mariano pc/escritori/PROGRAMACION/INFORMATORIO 2023/Semana 10 - Introduccion a Django/proyecto2023/repositorio-blog (master)
+$ git commit -m 'agregar archivo de texto'
+[master adeba56] agregar archivo de texto
+ 2 files changed, 60 insertions(+)
+ create mode 100644 comandos git-clonamos y hicimos un origin.txt
+ create mode 160000 desafio_10
+
+
+Servidor@SERVIDOR-PC MINGW64 /i/mariano pc/escritori/PROGRAMACION/INFORMATORIO 2023/Semana 10 - Introduccion a Django/proyecto2023/repositorio-blog (master)
+$ git status
+On branch master
+nothing to commit, working tree clean
+
+
+Servidor@SERVIDOR-PC MINGW64 /i/mariano pc/escritori/PROGRAMACION/INFORMATORIO 2023/Semana 10 - Introduccion a Django/proyecto2023/repositorio-blog (master)
+$ git remote -v
+origin  https://github.com/garneromariano/desafio_10.git (fetch)
+origin  https://github.com/garneromariano/desafio_10.git (push)
+
+Servidor@SERVIDOR-PC MINGW64 /i/mariano pc/escritori/PROGRAMACION/INFORMATORIO 2023/Semana 10 - Introduccion a Django/proyecto2023/repositorio-blog (master)
+$ git remote
+origin
+
+
+Servidor@SERVIDOR-PC MINGW64 /i/mariano pc/escritori/PROGRAMACION/INFORMATORIO 2023/Semana 10 - Introduccion a Django/proyecto2023/repositorio-blog (master)
+$ git push origin master
+Enumerating objects: 72, done.
+Counting objects: 100% (72/72), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (63/63), done.
+Writing objects: 100% (72/72), 23.59 KiB | 2.36 MiB/s, done.
+Total 72 (delta 14), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (14/14), done.
+remote: error: GH007: Your push would publish a private email address.
+remote: You can make your email public or disable this protection by visiting:
+remote: http://github.com/settings/emails
+To https://github.com/garneromariano/desafio_10.git
+ ! [remote rejected] master -> master (push declined due to email privacy restrictions)
+error: failed to push some refs to 'https://github.com/garneromariano/desafio_10.git'
+
+
+
+nos da error porque no coiciden los email de git con el de github o porque debemos hacer publica la dirección de correo electrónico en GitHub:
+hacemos el cambio en setting email y ahora si:
+
+
+
+Servidor@SERVIDOR-PC MINGW64 /i/mariano pc/escritori/PROGRAMACION/INFORMATORIO 2023/Semana 10 - Introduccion a Django/proyecto2023/repositorio-blog (master)
+$ git config --global user.email 138075153+garneromariano@users.noreply.github.com
+
+Servidor@SERVIDOR-PC MINGW64 /i/mariano pc/escritori/PROGRAMACION/INFORMATORIO 2023/Semana 10 - Introduccion a Django/proyecto2023/repositorio-blog (master)
+$ git push origin master
+Enumerating objects: 72, done.
+Counting objects: 100% (72/72), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (63/63), done.
+Writing objects: 100% (72/72), 23.59 KiB | 2.36 MiB/s, done.
+Total 72 (delta 14), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (14/14), done.
+remote:
+remote: Create a pull request for 'master' on GitHub by visiting:
+remote:      https://github.com/garneromariano/desafio_10/pull/new/master
+remote:
+To https://github.com/garneromariano/desafio_10.git
+ * [new branch]      master -> master
+
+Servidor@SERVIDOR-PC MINGW64 /i/mariano pc/escritori/PROGRAMACION/INFORMATORIO 2023/Semana 10 - Introduccion a Django/proyecto2023/repositorio-blog (master)
+$ git status
+On branch master
+nothing to commit, working tree clean
+
+despues de eso vamos a hace un pull con estos nuevos cambios:

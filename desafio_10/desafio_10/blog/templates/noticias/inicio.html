@@ -1,0 +1,72 @@
+
+{%extends 'base2.html' %}
+
+{% load static %}
+
+
+{%block titulo %} Noticias {% endblock titulo%}
+
+
+{%block head %} 
+ <!-- Page Header-->
+<header class="masthead" style="background-image: url('/static/image/home-bg.jpg')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>Noticias</h1>
+                    <span class="subheading">Seccion de Noticias sobre Economia</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock head%}
+
+ {% block contenido %}
+
+
+
+ 
+ <div class="d-flex justify-content-center">
+    
+    <div class="col-md-6"> <!-- Puedes ajustar el tamaño según tus necesidades -->
+        <h2>Categorias</h2>
+      <select name="categoria" class="form-select">
+        <option value="">Todas</option>
+        {% for c in categorias %}
+        <option value="{{ c.pk }}">{{ c.nombre }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <div class="noticias-container" style="margin: 40px;">
+    {% for noticia in noticias %}
+      <div class="noticia">
+        <h2 class="noticia-titulo"><a href="{% url 'noticias:detalle' noticia.pk %}">{{ noticia.titulo }}</a></h2>
+        <p class="noticia-cuerpo">{{ noticia.cuerpo }}</p>
+        <p class="noticia-fecha">{{ noticia.fecha }}</p>
+        <p class="noticia-categoria">Categoría: {{ noticia.categoria_noticia }}</p>
+        <img src="{{ noticia.imagen.url }}" alt="" style="max-width: 100%; max-height: 200px; margin-bottom: 10px;">
+      </div>
+    {% endfor %}
+  </div>
+
+{% if noticias.has_other_pages %}
+  <div class="pagination-container">
+    {% if noticias.has_previous %}
+      <a href="?page=1" class="btn btn-primary">&laquo; Primera</a>
+      <a href="?page={{ noticias.previous_page_number }}" class="btn btn-primary">Anterior</a>
+    {% endif %}
+
+    <span class="current-page btn btn-primary">{{ noticias.number }}</span>
+
+    {% if noticias.has_next %}
+      <a href="?page={{ noticias.next_page_number }}" class="btn btn-primary">Siguiente</a>
+      <a href="?page={{ noticias.paginator.num_pages }}" class="btn btn-primary">Última &raquo;</a>
+    {% endif %}
+  </div>
+{% endif %}
+    
+{% endblock contenido %}

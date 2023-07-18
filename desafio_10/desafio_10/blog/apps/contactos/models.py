@@ -7,6 +7,6 @@ class Contacto(models.Model):
     asunto = models.CharField(max_length=40)
     texto = models.TextField()
 
-    def __str__(self) -> str:
+    def __str__(self) -> str:  # para poder mostrar el nombre cuando hace referencia por ejemplo al objeto.tostring()
         return self.nombre
 #

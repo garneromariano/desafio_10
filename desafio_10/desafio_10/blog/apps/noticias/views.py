@@ -19,11 +19,8 @@ from django.contrib.auth.decorators import login_required
 #def inicio (request):
 #   return render(request, 'noticias/inicio.html')
 
-
-
-# uso de decorador para verificar logeo de usuario y poder ver noticia
-
-
+#dataNotation c#
+# decorador para ver las noticias solamente como usuario logueado
 @login_required
 def inicio(request):
     # obtener todas las noticias y mostrar en el inicio.html
@@ -38,7 +35,7 @@ def inicio(request):
     if id_categoria:
         noticias = Noticia.objects.filter(categoria_noticia=id_categoria)
     else:
-        noticias = Noticia.objects.all()  # una lista
+        noticias = Noticia.objects.all()  # devolver una lista simil Tolist() c#
 
     paginator = Paginator(noticias, 3)  # Paginar las noticias, mostrando 10 noticias por página
 

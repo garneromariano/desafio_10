@@ -13,7 +13,7 @@
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
                 <div class="page-heading">
-                    <h1>NOTICIA AGREGADA CON ÉXITO</h1>
+                    <h1>lista de noticias</h1>
                     <span class="subheading"></span>
                 </div>
             </div>
@@ -26,5 +26,19 @@
 
  {% block contenido %}
 
+
+{% for noticia in noticias %}
+<h2>{{ noticia.titulo }}</h2>
+<p>{{ noticia.subtitulo }}</p>
+<p>{{ noticia.fecha }}</p>
+<img src="{{ noticia.imagen.url }}" alt="{{ noticia.titulo }}" width="200">
+<p>{{ noticia.categoria_noticia }}</p>
+<a href="{% url 'noticias:ver_noticia' noticia.pk %}">Ver</a>
+<a href="{% url 'noticias:editar_noticia' noticia.pk %}">Editar</a> 
+<a href="{% url 'noticias:eliminar_noticia' noticia.pk %}">Eliminar</a> 
+<hr>
+{% endfor %}
+
+ <a href="{% url 'noticias:crear_noticia' %}">Crear nueva noticia</a>
   
 {% endblock contenido %}

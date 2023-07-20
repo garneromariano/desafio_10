@@ -36,8 +36,8 @@ Crear noticia
  <h2>¿Estás seguro de eliminar la noticia "{{ noticia.titulo }}"?</h2>
  <form method="post">
    {% csrf_token %}
-   <button type="submit">Eliminar</button>
-   <a href="{% url 'noticias:listar_noticias' %}">Cancelar</a>
+   <button type="submit"class="btn btn-danger btn-rounded ">Eliminar</button>
+   <a href="{% url 'noticias:listar_noticias' %} " class="btn btn-success btn-rounded">Cancelar</a>
  </form>
 
 

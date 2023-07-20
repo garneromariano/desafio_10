@@ -11,6 +11,7 @@
     <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}" />
     <!-- Font Awesome icons (free version)-->
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
@@ -63,6 +64,7 @@
                             <li><a class="dropdown-item" href="#!">+ Populares</a></li>                           
                             <li><a class="dropdown-item" href="#!">Ultimas</a></li>
                             <li><a class="dropdown-item" href="#!">Ver Todas</a></li>
+                            <li><a class="dropdown-item" href="{%url 'noticias:listar_noticias'%}">Admin Noticias</a></li>
                         </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'contactos:contacto' %}">Contacto</a></li>

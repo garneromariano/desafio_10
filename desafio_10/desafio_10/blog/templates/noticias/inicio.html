@@ -20,6 +20,7 @@
             </div>
         </div>
     </div>
+   
 </header>
 {% endblock head%}
 
@@ -30,7 +31,7 @@
  
  <div class="d-flex justify-content-center">
     
-    <div class="col-md-6"> <!-- Puedes ajustar el tamaño según tus necesidades -->
+    <div class="col-md-6"> 
         <h2>Categorias</h2>
       <select name="categoria" class="form-select">
         <option value="">Todas</option>
@@ -41,20 +42,21 @@
     </div>
   </div>
 
-  <div class="noticias-container" style="margin: 40px;">
+  <div class="container my-4">
     {% for noticia in noticias %}
-      <div class="noticia">
+      <div class="noticia card text-center p-4 mb-4">
         <h2 class="noticia-titulo"><a href="{% url 'noticias:detalle' noticia.pk %}">{{ noticia.titulo }}</a></h2>
         <p class="noticia-cuerpo">{{ noticia.cuerpo }}</p>
         <p class="noticia-fecha">{{ noticia.fecha }}</p>
         <p class="noticia-categoria">Categoría: {{ noticia.categoria_noticia }}</p>
-        <img src="{{ noticia.imagen.url }}" alt="" style="max-width: 100%; max-height: 200px; margin-bottom: 10px;">
+        <img src="{{ noticia.imagen.url }}" alt="" class="img-fluid rounded">
+        
       </div>
     {% endfor %}
-  </div>
+</div>
 
 {% if noticias.has_other_pages %}
-  <div class="pagination-container">
+  <div class="pagination-container text-center p-4 mb-4">
     {% if noticias.has_previous %}
       <a href="?page=1" class="btn btn-primary">&laquo; Primera</a>
       <a href="?page={{ noticias.previous_page_number }}" class="btn btn-primary">Anterior</a>

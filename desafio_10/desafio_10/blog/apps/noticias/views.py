@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse,get_object_or_404, redirect
 from .models import Noticia, Categoria
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 #dataNotation c#
 # decorador para ver las noticias solamente como usuario logueado
@@ -93,9 +93,21 @@ def listar_noticias(request):
 
     if categoria_seleccionada:
         noticias = noticias.filter(categoria_noticia__id=categoria_seleccionada)
+    
+    paginator = Paginator(noticias, 2) 
+    page_number = request.GET.get('page') 
+    try:
+       page_obj = paginator.get_page(page_number)
+    except PageNotAnInteger:
+         page_obj = paginator.get_page(1)
+    except EmptyPage:
+         page_obj = paginator.get_page(paginator.num_pages)
 
-    categorias = Categoria.objects.all()
-    return render(request, 'noticias/listar_noticias.html', {'noticias': noticias, 'categorias': categorias})
+    
+    categorias = Categoria.objects.all()    
+     
+
+    return render(request, 'noticias/listar_noticias.html', {'page_obj': page_obj, 'categorias': categorias})
 
 @login_required
 def ver_noticia(request, pk):

@@ -74,7 +74,7 @@ def crear_noticia(request):
             #return redirect('nombre_de_la_vista_exitosa')
             #return HttpResponse(('contactos/exito.html') + '?success=true')
             #return render(request,'noticias/exito.html')
-            return redirect('listar_noticias')
+            return redirect('noticias:listar_noticias')
         
     else:
         form = NoticiaForm()
@@ -83,9 +83,19 @@ def crear_noticia(request):
     return render(request, 'noticias/crear_noticia.html', data)
 
 @login_required
+#def listar_noticias(request):
+#    noticias = Noticia.objects.all()
+#    return render(request, 'noticias/listar_noticias.html', {'noticias': noticias})
+
 def listar_noticias(request):
+    categoria_seleccionada = request.GET.get('categoria')
     noticias = Noticia.objects.all()
-    return render(request, 'noticias/listar_noticias.html', {'noticias': noticias})
+
+    if categoria_seleccionada:
+        noticias = noticias.filter(categoria_noticia__id=categoria_seleccionada)
+
+    categorias = Categoria.objects.all()
+    return render(request, 'noticias/listar_noticias.html', {'noticias': noticias, 'categorias': categorias})
 
 @login_required
 def ver_noticia(request, pk):
@@ -99,7 +109,7 @@ def editar_noticia(request, pk):
         form = NoticiaForm(request.POST, request.FILES, instance=noticia)
         if form.is_valid():
             form.save()
-            return redirect('ver_noticia', pk=pk)
+            return redirect('noticias:listar_noticias')
     else:
         form = NoticiaForm(instance=noticia)
     return render(request, 'noticias/editar_noticia.html', {'form': form})
@@ -108,5 +118,5 @@ def eliminar_noticia(request, pk):
     noticia = get_object_or_404(Noticia, pk=pk)
     if request.method == 'POST':
         noticia.delete()
-        return redirect('listar_noticias')
+        return redirect('noticias:listar_noticias')
     return render(request, 'noticias/eliminar_noticia.html', {'noticia': noticia})

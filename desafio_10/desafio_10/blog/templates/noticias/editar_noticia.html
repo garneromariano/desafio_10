@@ -41,9 +41,9 @@ Crear noticia
                 <form method="post" enctype="multipart/form-data" class=" mb-3">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit">Guardar cambios</button>
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
                 </form>
-                <input type="submit" value="Enviar" class="btn btn-primary">
+               
             </form>
         </div>
     </div>

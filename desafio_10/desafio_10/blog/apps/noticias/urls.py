@@ -2,6 +2,8 @@ from django.urls import path
 from .views import *
 from . import views
 
+
+
 app_name = 'noticias'
 
 # URL de app noticias
@@ -17,6 +19,8 @@ urlpatterns = [
     path('<int:pk>/editar/', views.editar_noticia, name='editar_noticia'),
     path('<int:pk>/eliminar/', views.eliminar_noticia, name='eliminar_noticia'),
     ]
+
+
 
     
 

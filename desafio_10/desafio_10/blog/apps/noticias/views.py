@@ -6,9 +6,10 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # decorador para ver las noticias solamente como usuario logueado
 from django.contrib.auth.decorators import login_required
 from .forms import NoticiaForm
+from django.contrib import messages
 
-
-
+import os
+from django.conf import settings
 
 
 # Create your views here.
@@ -24,29 +25,32 @@ from .forms import NoticiaForm
 # decorador para ver las noticias solamente como usuario logueado
 
 def inicio(request):
-    # obtener todas las noticias y mostrar en el inicio.html
-    # ctx = {}
-    # # clase.objetcs.all()==> select * from noticia
-    # noticia = Noticia.objects.all()
-    # ctx["noticias"] = noticia
-    # return render(request, 'noticias/inicio.html', ctx)
     contexto = {}
-    id_categoria = request.GET.get('id', None)
+    id_categoria = request.GET.get('id')
+    titulo_busqueda = request.GET.get('busqueda_titulo')
 
+    
     if id_categoria:
         noticias = Noticia.objects.filter(categoria_noticia=id_categoria)
     else:
-        noticias = Noticia.objects.all()  # devolver una lista simil Tolist() c#
+        noticias = Noticia.objects.all()
 
-    paginator = Paginator(noticias, 3)  # Paginar las noticias, mostrando 10 noticias por página
+    
+    if titulo_busqueda:
+        noticias = noticias.filter(titulo__icontains=titulo_busqueda)
+
+    
+    noticias = noticias.order_by('-fecha')
+
+    paginator = Paginator(noticias, 3)  
 
     page_number = request.GET.get('page')
     noticias_paginadas = paginator.get_page(page_number)
 
-    cat = Categoria.objects.all().order_by('nombre')
+    categorias = Categoria.objects.all().order_by('nombre')
 
     contexto['noticias'] = noticias_paginadas
-    contexto['categorias'] = cat
+    contexto['categorias'] = categorias
 
     return render(request, 'noticias/inicio.html', contexto)
 
@@ -62,24 +66,27 @@ def Detalle_Noticias(request, pk):
 
 @login_required
 def crear_noticia(request):
-    
     data = {
         'form': NoticiaForm()
     }
 
     if request.method == 'POST':
-        form = NoticiaForm(request.POST)
-        if form.is_valid():
-            form.save()
-            #return redirect('nombre_de_la_vista_exitosa')
-            #return HttpResponse(('contactos/exito.html') + '?success=true')
-            #return render(request,'noticias/exito.html')
-            return redirect('noticias:listar_noticias')
+        form = NoticiaForm(request.POST, request.FILES)
         
-    else:
-        form = NoticiaForm()
-    
-    
+        if form.is_valid():
+            new_image = form.cleaned_data.get('imagen') 
+                     
+           
+            noticia = form.save(commit=False)
+            noticia.imagen = new_image
+            noticia.save()
+            
+            messages.success(request, 'Guardado correctamente')
+            return redirect('noticias:listar_noticias')
+        else:
+            data['form'] = form
+            messages.error(request, 'No se pudo agregar. Verifica el formulario.')
+      
     return render(request, 'noticias/crear_noticia.html', data)
 
 @login_required
@@ -89,12 +96,13 @@ def crear_noticia(request):
 
 def listar_noticias(request):
     categoria_seleccionada = request.GET.get('categoria')
-    noticias = Noticia.objects.all()
+    noticias = Noticia.objects.all().order_by('-fecha')
+    
 
     if categoria_seleccionada:
         noticias = noticias.filter(categoria_noticia__id=categoria_seleccionada)
     
-    paginator = Paginator(noticias, 2) 
+    paginator = Paginator(noticias, 10) 
     page_number = request.GET.get('page') 
     try:
        page_obj = paginator.get_page(page_number)
@@ -117,14 +125,38 @@ def ver_noticia(request, pk):
 @login_required
 def editar_noticia(request, pk):
     noticia = get_object_or_404(Noticia, pk=pk)
+    
+    data = {
+        'form': NoticiaForm(instance=noticia)
+    }
+    
     if request.method == 'POST':
         form = NoticiaForm(request.POST, request.FILES, instance=noticia)
+        
         if form.is_valid():
-            form.save()
+            new_image = form.cleaned_data.get('imagen')  # Obtén la nueva imagen del formulario
+            
+            try:
+                foto = request.FILES['imagen']
+                ruta_foto = os.path.join(settings.MEDIA_ROOT, 'noticias', str(noticia.imagen))
+                if ruta_foto != os.path.join(settings.MEDIA_ROOT, 'noticias', 'asd.jpg'):
+                    os.remove(ruta_foto)
+            except:
+                pass
+            
+            noticia.imagen = new_image
+            form.save()  # Guarda el formulario y la instancia de Noticia
+            
+            messages.success(request, 'Guardado correctamente')
             return redirect('noticias:listar_noticias')
+        else:
+            data['form'] = form
+            messages.error(request, 'No se pudo guardar. Verifica el formulario.')
     else:
-        form = NoticiaForm(instance=noticia)
-    return render(request, 'noticias/editar_noticia.html', {'form': form})
+        form = data['form']  
+    return render(request, 'noticias/editar_noticia.html', data)
+
+
 @login_required
 def eliminar_noticia(request, pk):
     noticia = get_object_or_404(Noticia, pk=pk)

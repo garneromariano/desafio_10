@@ -40,6 +40,10 @@
         {% endfor %}
       </select>
     </div>
+    <div class="col-md-6"> 
+      <h2>Buscar por título</h2>
+      <input type="text" name="busqueda_titulo" class="form-control" placeholder="Ingrese el título">
+  </div>
   </div>
 
   <div class="container my-4">
@@ -49,7 +53,12 @@
         <p class="noticia-cuerpo">{{ noticia.cuerpo }}</p>
         <p class="noticia-fecha">{{ noticia.fecha }}</p>
         <p class="noticia-categoria">Categoría: {{ noticia.categoria_noticia }}</p>
-        <img src="{{ noticia.imagen.url }}" alt="" class="img-fluid rounded">
+        {% comment %} <img src="{{ noticia.imagen.url }}" alt="" class="img-fluid rounded"> {% endcomment %}
+        {% if noticia.imagen %}
+            <img src="{{ noticia.imagen.url }}" alt="" class="img-fluid rounded">
+        {% else %}
+            <img src="{% static 'path/to/default/image.jpg' %}" alt="Imagen predeterminada" class="img-fluid rounded">
+        {% endif %}
         
       </div>
     {% endfor %}

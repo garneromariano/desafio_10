@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from . import *
+from apps.blogpost.models import Post
 # Create your views here.
 
 #def inicio (request):
@@ -10,7 +11,9 @@ def inicio1 (request):
     return render(request,'home1.html')
 
 def inicio2 (request):
-    return render(request,'home2.html')
+    post = Post.objects.all()
+        
+    return render(request,'home2.html',{'post':post})
 
 def nosostros1(request) :
     return render(request,'nosotros2.html')

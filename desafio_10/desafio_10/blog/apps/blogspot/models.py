@@ -8,6 +8,8 @@ class Post(models.Model):
     titulo = models.CharField(max_length=255)
     autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     cuerpo=models.TextField()
+    slug = models.SlugField()
+    fechaCreado= models.DateTimeField(auto_now_add=True,null=True)
 
 def __str__(self):
     return self.titulo + ' | ' + self.autor 

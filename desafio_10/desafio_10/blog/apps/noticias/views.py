@@ -10,6 +10,7 @@ from django.contrib import messages
 
 import os
 from django.conf import settings
+from django.db.models import Q
 
 
 # Create your views here.
@@ -28,22 +29,20 @@ def inicio(request):
     contexto = {}
     id_categoria = request.GET.get('id')
     titulo_busqueda = request.GET.get('busqueda_titulo')
-
+    print('id_categoria:', id_categoria)
+    print('titulo_busqueda:', titulo_busqueda)
+    
+    noticias = Noticia.objects.all()  
     
     if id_categoria:
-        noticias = Noticia.objects.filter(categoria_noticia=id_categoria)
-    else:
-        noticias = Noticia.objects.all()
-
+        noticias = noticias.filter(categoria_noticia=id_categoria)
     
     if titulo_busqueda:
-        noticias = noticias.filter(titulo__icontains=titulo_busqueda)
-
+        noticias = noticias.filter(Q(titulo__icontains=titulo_busqueda))
     
     noticias = noticias.order_by('-fecha')
 
     paginator = Paginator(noticias, 3)  
-
     page_number = request.GET.get('page')
     noticias_paginadas = paginator.get_page(page_number)
 

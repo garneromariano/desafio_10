@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from . import *
-from apps.blogspot.models import Post
+from apps.blogpost.models import Post
 # Create your views here.
 
 #def inicio (request):

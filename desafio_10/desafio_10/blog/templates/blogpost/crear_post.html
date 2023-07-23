@@ -1,0 +1,56 @@
+{%extends 'base2.html' %}
+
+{% load static %}
+
+{%block titulo %} 
+
+Crear noticia 
+
+{% endblock titulo%}
+
+
+
+{%block head %} 
+ <!-- Page Header-->
+ <header class="masthead" style="background-image: url('static/image/home Grupo10.jpg')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>INFORMATORIO</h1>
+                    <h2>Blog Grupo 10</h2>
+                    <span class="subheading">Un Blog Para todos</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+{% endblock head%}
+
+
+
+
+ {% block contenido %}
+  
+ <div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form id="NoticiaForm" action="{% url 'noticias:crear_noticia' %}" method="post"enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class=" mb-3">
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+                
+                {% endfor %}
+              
+                <input type="submit" value="Enviar" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock contenido %}

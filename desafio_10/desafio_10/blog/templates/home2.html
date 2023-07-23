@@ -16,7 +16,7 @@
                 <div class="site-heading">
                     <h1>INFORMATORIO</h1>
                     <h2>Blog Grupo 10</h2>
-                    <span class="subheading">Un Blog Para todos</span>
+                    <span class="subheading">Noticias sobre Economia y mas </span>
                 </div>
             </div>
         </div>
@@ -31,24 +31,12 @@
    <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
-            <!-- Post preview-->
-            <div class="post-preview">
-                <a href="post.html">
-                    <h2 class="post-title">Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe fugit at et deleniti sunt autem cumque nulla temporibus ipsa asperiores, consequuntur quaerat. Quisquam fugit accusamus totam fugiat a magnam maxime.</h2>
-                    <h3 class="post-subtitle">Problems look mighty small from 150 miles up</h3>
-                </a>
-                <p class="post-meta">
-                    Posted by
-                    <a href="#!">Start Bootstrap</a>
-                    on September 24, 2023
-                </p>
-            </div>
-            <div>
+           
                 {% for cadaPost in post %}
                 <div class="post-preview">
-                    <a href="post.html">
+                    <a href="{% url 'blogpost:post_detalle' cadaPost.id %}">
                         <h2 class="post-title">{{cadaPost.titulo}}</h2>
-                        <h3 class="post-subtitle">{{cadaPost.cuerpo}}</h3>
+                        <h3 class="post-subtitle">{{cadaPost.cuerpo |slice:"200"}}</h3>
                     </a>
                     <p class="post-meta">
                         Posted by

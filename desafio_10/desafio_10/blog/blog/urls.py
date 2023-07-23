@@ -49,7 +49,7 @@ urlpatterns = [
 
 
       # ----------- URL APP BlogPost----------
-    path('blogpost/',include('apps.blogspot.urls')) ,   
+    path('blogpost/',include('apps.blogpost.urls')) ,   
 
      # LOGIN
     # path('usuarios/login', views.login, name='login')

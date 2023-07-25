@@ -7,8 +7,8 @@ from .forms import ComentarioForm, PostForm,PostFormEdit
 from .models import Post
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django .http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.urls import reverse
 from django.contrib import messages
 
 # # Create your views here.
@@ -40,12 +40,13 @@ def inicio(request):
 
     return render(request, 'blogpost/inicio.html', contexto)
 
-def detalle_post(request,pk):
+def detalle_post2(request,pk):
     post = Post.objects.get(id=pk) # est es el nombre que asignamos en urls para el id
 
     comentarios = post.comentario.filter(activo =True)
 
     if request.method == 'POST':
+        
         form = ComentarioForm (request.POST)
 
         if form.is_valid():
@@ -59,6 +60,26 @@ def detalle_post(request,pk):
     return render(request,'blogpost/detalle_post.html',{'post':post,'comentarios':comentarios,'form':form})
 
 
+def detalle_post(request, pk):
+    post = Post.objects.get(id=pk) # Este es el nombre que asignamos en urls para el id
+    comentarios = post.comentario.filter(activo=True)
+
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST)
+
+        if form.is_valid():
+            new_form = form.save(commit=False) # Ponemos False para que solo guarde cuando el usuario haga clic al botón enviar
+            new_form.post = post
+            new_form.save()
+            return HttpResponseRedirect(reverse('blogpost:detalle', args=[pk]))
+    else:
+        form = ComentarioForm()
+
+    # Si el usuario no está autenticado, establecemos el formulario como Vacio
+    if not request.user.is_authenticated:
+        form = None
+
+    return render(request, 'blogpost/detalle_post.html', {'post': post, 'comentarios': comentarios, 'form': form})
 
 # def detalle_Post(request, pk):
 #     contexto = {}
@@ -69,6 +90,7 @@ def detalle_post(request,pk):
 #     return render(request, 'blogpost/detalle_post.html', contexto)
 
 @login_required
+@user_passes_test(lambda user: user.is_staff)
 def crear_post(request):
     data = {
         'form': PostForm()
@@ -94,6 +116,7 @@ def crear_post(request):
     return render(request, 'blogpost/crear_post.html', data)
 
 @login_required
+@user_passes_test(lambda user: user.is_staff)
 def listar_post(request):
     
     post = Post.objects.all().order_by('-fechaCreado')
@@ -111,11 +134,13 @@ def listar_post(request):
     return render(request, 'blogpost/listar_post.html', {'page_obj': page_obj})
 
 @login_required
+@user_passes_test(lambda user: user.is_staff)
 def ver_post(request, pk):
     post = get_object_or_404(Post, pk=pk)    
     return render(request, 'blogpost/ver_post.html', {'noticia': post})
 
 @login_required
+@user_passes_test(lambda user: user.is_staff)
 def editar_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     print(pk)
@@ -153,6 +178,7 @@ def editar_post(request, pk):
 
 
 @login_required
+@user_passes_test(lambda user: user.is_staff)
 def eliminar_post(request, pk):
     post = get_object_or_404(post, pk=pk)
     if request.method == 'POST':

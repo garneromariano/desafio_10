@@ -67,7 +67,7 @@
         {% if noticia.imagen %}
             <img src="{{ noticia.imagen.url }}" alt="" class="img-fluid rounded">
         {% else %}
-            <img src="{% static 'path/to/default/image.jpg' %}" alt="Imagen predeterminada" class="img-fluid rounded">
+            <img src="{% static 'media/blogpost/default.png' %}" alt="Imagen predeterminada" class="img-fluid rounded">
          {% endif %}
         <div class="btn-group" role="group">
             <a href="{% url 'noticias:ver_noticia' noticia.pk %}" class="btn btn-primary">Ver</a>

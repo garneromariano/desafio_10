@@ -34,12 +34,12 @@
            
                 {% for cadaPost in post %}
                 <div class="post-preview">
-                    <a href="{% url 'blogpost:post_detalle' cadaPost.id %}">
+                    <a href="{% url 'blogpost:detalle' cadaPost.id %}">
                         <h2 class="post-title">{{cadaPost.titulo}}</h2>
                         <h3 class="post-subtitle">{{cadaPost.cuerpo |slice:"200"}}</h3>
                     </a>
                     <p class="post-meta">
-                        Posted by
+                        Posteado por
                         <a href="#!">{{cadaPost.autor}}</a>
                         {{cadaPost.fechaCreado}}
                     </p>
@@ -50,7 +50,7 @@
             <!-- Divider-->
             <hr class="my-4" />
             <!-- Pager-->
-            <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
+            <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">whatsapp →</a></div>
         </div>
     </div>
 </div>

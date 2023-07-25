@@ -7,46 +7,94 @@
 
  <!-- Page Header-->
 <header class="masthead" style="background-image: url('/static/image/home Grupo10.jpg')">
-    <div class="container position-relative px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
+   
+
+
+<section class="">
+    <!-- Jumbotron -->
+    <div class="px-4 py-5 px-md-5 text-center text-lg-start" >
+      <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-lg-5 align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0 card h-100" style="background-color: #525252; color: aliceblue;">
                 <div class="site-heading">
                     <h1>Registro</h1>
                     <h2>Blog Grupo 10</h2>
                     <span class="subheading">Un Blog Para todos</span>
                 </div>
+                <p style="color: hsl(0, 0%, 100%)">
+                    "¡Bienvenido(a) al sitio web del Grupo 10! Este espacio ha sido creado como parte de nuestro trabajo final informatorio. Estamos emocionados de tenerte aquí.
+            
+                    Para comenzar, regístrate en el sitio y comunícate con un administrador para obtener los permisos necesarios según tus intereses y necesidades. Dentro de nuestra plataforma, podrás solicitar permisos para colaborar y contribuir tanto en el blog como en las noticias.
+                    
+                    En nuestro blog, podrás compartir todo aquello que desees: tus ideas, pensamientos, experiencias y más. Además, tendrás la opción de interactuar con otros usuarios mediante comentarios y discusiones.
+                    
+                    En la sección de noticias, tendrás la oportunidad de cargar y editar noticias desde tu cuenta personal, manteniendo a todos informados sobre los temas más relevantes.
+                    
+                    Esperamos que disfrutes al máximo de esta experiencia en nuestro sitio web. ¡Explora, interactúa y forma parte de nuestra comunidad! Si tienes alguna pregunta o inquietud, no dudes en contactarnos.
+                    
+                    ¡Gracias por unirte a nuestra comunidad en línea y contribuir con tu presencia!
+                    
+                    El Grupo 10"
+                </p>
+            </div>
+            
+            <div class="col-lg-6 mb-5 mb-lg-0 h-100 d-flex align-items-center">
+                <div class="card">
+                    <div class="card-body py-5 px-md-5">
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <!-- Checkbox -->
+                            <div class="form-check d-flex justify-content-center mb-4">
+                                <input class="form-check-input me-2" type="checkbox" name="subscribe" id="form2Example33" checked />
+                                <label class="form-check-label" for="form2Example33">
+                                    Subscribe to our newsletter
+                                </label>
+                            </div>
+            
+                            <!-- Submit button -->
+                            <button type="submit" class="btn btn-primary btn-block mb-4">
+                                Sign up
+                            </button>
+            
+                            <!-- Register buttons -->
+                            <div class="text-center">
+                                <p>or sign up with:</p>
+                                <button type="button" class="btn btn-link btn-floating mx-1">
+                                    <i class="fab fa-facebook-f"></i>
+                                </button>
+            
+                                <button type="button" class="btn btn-link btn-floating mx-1">
+                                    <i class="fab fa-google"></i>
+                                </button>
+            
+                                <button type="button" class="btn btn-link btn-floating mx-1">
+                                    <i class="fab fa-twitter"></i>
+                                </button>
+            
+                                <button type="button" class="btn btn-link btn-floating mx-1">
+                                    <i class="fab fa-github"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
+      </div>
     </div>
+    <!-- Jumbotron -->
+  </section>
+
+
+ 
 </header>
 {% endblock head%}
 
 
 {% block contenido%}
 
-<div class="container d-flex justify-content-center align-items-center">
-    <div class="card">
-        <div class="card-body">
-            <form action="" method="post">
-                {% csrf_token %}
-                <table class="table">
-                    {{ form.as_table }}
-                </table>
-                
-                <button type="submit" class="btn btn-primary rounded">Enviar</button>
-            </form>
-        </div>
-    </div>
-</div>
 
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function() {
-    // Ocultar el elemento registrar
-    $("#registro-link").hide();
-});
-</script>
 
 {% endblock contenido%}
 

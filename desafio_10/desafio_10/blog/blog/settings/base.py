@@ -65,6 +65,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'blog.contexto_processo.logged_in_user',
+                
             ],
         },
     },
@@ -127,3 +129,7 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#LOGIN_REDIRECT_URL = '' # para que cuando login llevar al dominio
+
+LOGIN_REDIRECT_URL = 'inicio2'

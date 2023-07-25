@@ -18,7 +18,7 @@
                     <h2 class="subheading">{{post.subtituloGenral|default_if_none:""}}</h2>
                    
                     <span class="meta"> 
-                         Posted by
+                         Posteado por
                        {{post.autor}}
                        {{post.fechaCreado}}
                     </span>
@@ -106,9 +106,10 @@
                           </div>
                         </div>
                       </section>
+                      {% if form %}
                       <form method="post">
-                        {% csrf_token %}
-                        <div class="row mb-3">
+                          {% csrf_token %}
+                          <div class="row mb-3">
                             <div class="col-md-6">
                                 <input type="text" name="{{ form.nombre.name }}" class="form-control" placeholder="{{ form.nombre.label }}">
                             </div>
@@ -126,8 +127,18 @@
                             <!-- <label class="form-check-label" for="id_activo">{{ form.activo.label }}</label> -->
                             <small class="form-text text-muted">Activo</small>
                         </div>
-                        <input class="btn btn-primary" type="submit" name="Enviar" value="Comentar">
-                    </form>
+                          <input class="btn btn-primary" type="submit" name="Enviar" value="Comentar">
+                      </form>
+                      {% else %}
+                      <div class="text-center">
+                        <p>Inicia sesión para dejar un comentario.</p>
+                        <form method="post" action="{% url 'login' %}?next={{ request.path }}">
+                          {% csrf_token %}
+                          <input class="btn btn-primary" type="submit" value="Iniciar sesión">
+                         </form>
+                        
+                      </div>
+                      {% endif %}
               
 
 

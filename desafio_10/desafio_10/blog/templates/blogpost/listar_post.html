@@ -51,11 +51,11 @@
       <div class="Post card text-center p-4 mb-4">
         <h2 class="Post-titulo"><a href="{% url 'blogpost:detalle' Post.pk %}">{{ Post.titulo }}</a></h2>
        
-        {% comment %} <img src="{{ Post.imagen.url }}" alt="" class="img-fluid rounded"> {% endcomment %}
-        {% if Post.imagen %}
-            <img src="{{ Post.imagen.url }}" alt="" class="img-fluid rounded">
+        {% comment %} <img src="{{ Post.imagen1.url }}" alt="" class="img-fluid rounded"> {% endcomment %}
+        {% if Post.imagen1 %}
+            <img src="{{ Post.imagen1.url }}" alt="" class="img-fluid rounded">
         {% else %}
-            <img src="{% static 'path/to/default/image.jpg' %}" alt="Imagen predeterminada" class="img-fluid rounded">
+            <img src="{% static 'media/blogpost/default.png' %}" alt="Imagen predeterminada" class="img-fluid rounded">
         {% endif %}
         <div class="btn-group" role="group">
             <a href="{% url 'blogpost:detalle' Post.pk %}" class="btn btn-primary">Ver</a>

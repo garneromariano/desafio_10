@@ -40,7 +40,7 @@ def inicio(request):
 
     return render(request, 'blogpost/inicio.html', contexto)
 
-def detalle_Post(request,pk):
+def detalle_post(request,pk):
     post = Post.objects.get(id=pk) # est es el nombre que asignamos en urls para el id
 
     comentarios = post.comentario.filter(activo =True)
@@ -86,7 +86,7 @@ def crear_post(request):
             noticia.save()
             
             messages.success(request, 'Guardado correctamente')
-            return redirect('blogpost:listar_post')
+            return redirect('blogpost:listar')
         else:
             data['form'] = form
             messages.error(request, 'No se pudo agregar. Verifica el formulario.')
@@ -157,5 +157,5 @@ def eliminar_post(request, pk):
     post = get_object_or_404(post, pk=pk)
     if request.method == 'POST':
         post.delete()
-        return redirect('blogpost:listar_post')
+        return redirect('blogpost:listar')
     return render(request, 'blogpost/eliminar_post.html', {'post': post})

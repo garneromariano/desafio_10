@@ -16,6 +16,8 @@ class PostForm(forms.ModelForm):
         super(PostForm, self).__init__(*args, **kwargs)
         self.fields['fechaCreado'].initial = date.today()
 
+       
+
 class ComentarioForm(forms.ModelForm):
     class Meta:
         model = Comentario
@@ -27,3 +29,16 @@ class ComentarioForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ComentarioForm, self).__init__(*args, **kwargs)
         self.fields['activo'].required = False
+
+class PostFormEdit(forms.ModelForm):
+
+    class Meta:
+        model = Post
+        fields = "__all__"
+        widgets = {
+            "fechaCreado": forms.SelectDateWidget()
+        }
+           
+    def __init__(self, *args, **kwargs):
+        super(PostFormEdit, self).__init__(*args, **kwargs)
+        

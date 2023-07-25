@@ -33,12 +33,18 @@ Crear noticia
 
  {% block contenido %}
   
- <h2>¿Estás seguro de eliminar la el post "{{ post.titulo }}"?</h2>
- <form method="post">
-   {% csrf_token %}
-   <button type="submit"class="btn btn-danger btn-rounded ">Eliminar</button>
-   <a href="{% url 'blogpost:listar_post' %} " class="btn btn-success btn-rounded">Cancelar</a>
- </form>
+ <article class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <a href="{% url 'blogpost:editar_post' post.pk %}">Editar</a>
+            <a href="{% url 'blogpost:eliminar_post' post.pk %}">Eliminar</a>
+            <div class="col-md-10 col-lg-8 col-xl-10">
+
+               
+            </div>
+        </div>
+    </div>
+</article>
 
 
 {% endblock contenido %}

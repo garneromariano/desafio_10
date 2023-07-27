@@ -1,0 +1,73 @@
+{%extends 'base2.html' %}
+
+{% load static %}
+
+{%block titulo %} home {% endblock titulo%}
+
+
+{%block head %} 
+
+
+ <!-- Page Header-->
+<header class="masthead" style="background-image:  url('{% static "image/fondo_Blog.jpg" %}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>Blog</h1>
+                    <h2>Grupo 10</h2>
+                    <span class="subheading">Un Blog Para todos</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock head%}
+
+
+
+ {% block contenido %}
+   <!-- Main Content-->
+   <div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            {% for cadaPost in posteos %}
+            <div class="post-preview">
+                <a href="{% url 'blogpost:detalle' cadaPost.id %}">
+                    <h2 class="post-title">{{cadaPost.titulo}}</h2>
+                    <h3 class="post-subtitle">{{cadaPost.cuerpo |slice:"20" }}</h3>
+                </a>
+                <p class="post-meta">
+                    Posteado por 
+                    <a href="#!">{{cadaPost.autor}}</a>
+                    {{cadaPost.fechaCreado}}
+                </p>
+            </div>
+            {% endfor %}
+                
+            
+            <!-- Divider-->
+            <hr class="my-4" />
+            <!-- Pager-->
+            <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="{% url  'contactos:contacto' %}">Sugerencia ?  →</a></div>
+        </div>
+    </div>
+</div>
+
+{% if post_paginadas.has_other_pages %}
+  <div class="pagination-container text-center p-4 mb-4">
+    {% if post_paginadas.has_previous %}
+      <a href="?page=1" class="btn btn-primary">&laquo; Primera</a>
+      <a href="?page={{ post_paginadas.previous_page_number }}" class="btn btn-primary">Anterior</a>
+    {% endif %}
+
+    <span class="current-page btn btn-primary">{{ post_paginadas.number }}</span>
+
+    {% if post_paginadas.has_next %}
+      <a href="?page={{ post_paginadas.next_page_number }}" class="btn btn-primary">Siguiente</a>
+      <a href="?page={{ post_paginadas.paginator.num_pages }}" class="btn btn-primary">Última &raquo;</a>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% endblock contenido %}

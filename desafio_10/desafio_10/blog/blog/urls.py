@@ -49,17 +49,17 @@ urlpatterns = [
 
 
       # ----------- URL APP BlogPost----------
-    path('blogpost/',include('apps.blogspot.urls')) ,   
+    path('blogpost/',include('apps.blogpost.urls')) ,   
 
      # LOGIN
     # path('usuarios/login', views.login, name='login')
     path('login/', auth.LoginView.as_view(template_name='usuarios/login.html'), name='login'),
     path('accounts/login/', auth.LoginView.as_view(template_name='usuarios/login.html'), name='login'),
-   
+    
     # ultimo error de la clase solucionado
     # path('logout/', auth.LoginView.as_view(), name='logout'),
     # cambiar LoginView por LogoutView
-    path('logout/', auth.LogoutView.as_view(), name='logout'),
+    path('logout/', auth.LogoutView.as_view(template_name='usuarios/login.html'), name='logout'),
 
     # Registro
     path('usuarios/', include('apps.usuarios.urls'))

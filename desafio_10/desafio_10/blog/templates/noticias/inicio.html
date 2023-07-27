@@ -29,22 +29,29 @@
 
 
  
- <div class="d-flex justify-content-center">
-    
+ <div class="container">
+  <div class="row justify-content-center">
     <div class="col-md-6"> 
-        <h2>Categorias</h2>
-      <select name="categoria" class="form-select">
-        <option value="">Todas</option>
-        {% for c in categorias %}
-        <option value="{{ c.pk }}">{{ c.nombre }}</option>
-        {% endfor %}
-      </select>
+      <h2>Categorías</h2>
+      <form action="{% url 'noticias:inicio' %}" method="get" class="d-flex align-items-center">
+        <select name="categoria_id" class="form-select" id="select-categoria">
+          <option value="">Seleccione</option>
+          {% for c in categorias %}
+          <option value="{{ c.pk }}">{{ c.nombre }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary ms-2">Todas</button>
+      </form>
     </div>
-    <div class="col-md-6"> 
+    <div class="col-md-6 mt-3 mt-md-0"> 
       <h2>Buscar por título</h2>
-      <input type="text" name="busqueda_titulo" class="form-control" placeholder="Ingrese el título">
+      <form action="{% url 'noticias:inicio' %}" method="get" class="d-flex align-items-center">
+        <input type="text" name="busqueda_titulo" class="form-control me-2" placeholder="Ingrese el título">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+      </form>
+    </div>
   </div>
-  </div>
+</div>
 
   <div class="container my-4">
     {% for noticia in noticias %}
@@ -80,4 +87,14 @@
   </div>
 {% endif %}
     
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      const selectCategoria = document.getElementById('select-categoria');
+  
+      selectCategoria.addEventListener('change', () => {
+          const form = selectCategoria.closest('form');
+          form.submit();
+      });
+  });
+  </script>
 {% endblock contenido %}

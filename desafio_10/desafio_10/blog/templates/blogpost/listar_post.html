@@ -1,0 +1,88 @@
+{%extends 'base2.html' %}
+
+{% load static %}
+
+{%block titulo %} home {% endblock titulo%}
+
+
+{%block head %} 
+
+<header class="masthead" style="background-image: url('{% static "image/fondo_Blog.jpg" %}')">
+    
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="page-heading">
+                    <h1>Blog</h1>
+                    <span class="subheading"> administracion de blog</span>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <script src="{% static 'js/filtroCategoriasNoticia.js' %}"></script>
+    </header>
+{% endblock head%}
+
+
+
+ 
+
+{% block contenido %}
+
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="d-flex justify-content-center">
+    <div class="col-md-6">
+       
+    </div>
+</div>
+
+<div class="container my-4">
+ 
+    {% for Post in page_obj %}
+      <div class="Post card text-center p-4 mb-4">
+        <h2 class="Post-titulo"><a href="{% url 'blogpost:detalle' Post.pk %}">{{ Post.titulo }}</a></h2>
+       
+        {% comment %} <img src="{{ Post.imagen1.url }}" alt="" class="img-fluid rounded"> {% endcomment %}
+        {% if Post.imagen1 %}
+            <img src="{{ Post.imagen1.url }}" alt="" class="img-fluid rounded">
+        {% else %}
+            <img src="{% static 'media/blogpost/default.png' %}" alt="Imagen predeterminada" class="img-fluid rounded">
+        {% endif %}
+        <div class="btn-group" role="group">
+            <a href="{% url 'blogpost:detalle' Post.pk %}" class="btn btn-primary">Ver</a>
+            <a href="{% url 'blogpost:editar' Post.pk %}" class="btn btn-warning">Editar</a>
+            <a href="{% url 'blogpost:eliminar' Post.pk %}" class="btn btn-danger">Eliminar</a>
+           
+        </div>
+       
+      </div>
+    {% endfor %}
+</div>
+
+{% if page_obj.has_other_pages %}
+  <div class="pagination-container text-center p-4 mb-4">
+    {% if page_obj.has_previous %}
+      <a href="?page=1" class="btn btn-primary">&laquo; Primera</a>
+      <a href="?page={{ post.previous_page_number }}" class="btn btn-primary">Anterior</a>
+    {% endif %}
+
+    <span class="current-page btn btn-primary">{{ page_obj.number }}</span>
+
+    {% if page_obj.has_next %}
+      <a href="?page={{ post.next_page_number }}" class="btn btn-primary">Siguiente</a>
+      <a href="?page={{ post.paginator.num_pages }}" class="btn btn-primary">Última &raquo;</a>
+    {% endif %}
+  </div>
+{% endif %}
+
+
+{% endblock contenido %}

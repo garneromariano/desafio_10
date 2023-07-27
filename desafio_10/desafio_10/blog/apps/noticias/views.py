@@ -4,12 +4,13 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 #dataNotation c#
 # decorador para ver las noticias solamente como usuario logueado
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,user_passes_test
 from .forms import NoticiaForm
 from django.contrib import messages
 
 import os
 from django.conf import settings
+from django.db.models import Q
 
 
 # Create your views here.
@@ -28,22 +29,20 @@ def inicio(request):
     contexto = {}
     id_categoria = request.GET.get('id')
     titulo_busqueda = request.GET.get('busqueda_titulo')
-
+    print('id_categoria:', id_categoria)
+    print('titulo_busqueda:', titulo_busqueda)
+    
+    noticias = Noticia.objects.all()  
     
     if id_categoria:
-        noticias = Noticia.objects.filter(categoria_noticia=id_categoria)
-    else:
-        noticias = Noticia.objects.all()
-
+        noticias = noticias.filter(categoria_noticia=id_categoria)
     
     if titulo_busqueda:
-        noticias = noticias.filter(titulo__icontains=titulo_busqueda)
-
+        noticias = noticias.filter(Q(titulo__icontains=titulo_busqueda))
     
     noticias = noticias.order_by('-fecha')
 
     paginator = Paginator(noticias, 3)  
-
     page_number = request.GET.get('page')
     noticias_paginadas = paginator.get_page(page_number)
 
@@ -55,7 +54,7 @@ def inicio(request):
     return render(request, 'noticias/inicio.html', contexto)
 
 
-@login_required
+
 def Detalle_Noticias(request, pk):
     contexto = {}
 
@@ -65,6 +64,7 @@ def Detalle_Noticias(request, pk):
     return render(request, 'noticias/detalle.html', contexto)
 
 @login_required
+@user_passes_test(lambda user: user.is_staff)
 def crear_noticia(request):
     data = {
         'form': NoticiaForm()
@@ -90,6 +90,7 @@ def crear_noticia(request):
     return render(request, 'noticias/crear_noticia.html', data)
 
 @login_required
+@user_passes_test(lambda user: user.is_staff)
 #def listar_noticias(request):
 #    noticias = Noticia.objects.all()
 #    return render(request, 'noticias/listar_noticias.html', {'noticias': noticias})
@@ -118,11 +119,13 @@ def listar_noticias(request):
     return render(request, 'noticias/listar_noticias.html', {'page_obj': page_obj, 'categorias': categorias})
 
 @login_required
+@user_passes_test(lambda user: user.is_staff)
 def ver_noticia(request, pk):
     noticia = get_object_or_404(Noticia, pk=pk)    
     return render(request, 'noticias/ver_noticia.html', {'noticia': noticia})
 
 @login_required
+@user_passes_test(lambda user: user.is_staff)
 def editar_noticia(request, pk):
     noticia = get_object_or_404(Noticia, pk=pk)
     
@@ -158,6 +161,7 @@ def editar_noticia(request, pk):
 
 
 @login_required
+@user_passes_test(lambda user: user.is_staff)
 def eliminar_noticia(request, pk):
     noticia = get_object_or_404(Noticia, pk=pk)
     if request.method == 'POST':

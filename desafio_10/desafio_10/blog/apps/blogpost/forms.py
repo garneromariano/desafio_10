@@ -21,14 +21,17 @@ class PostForm(forms.ModelForm):
 class ComentarioForm(forms.ModelForm):
     class Meta:
         model = Comentario
-        fields = ('nombre', 'email', 'contenido', 'activo')
+        fields = ( 'contenido', 'activo')
         widgets = {
             'activo': forms.CheckboxInput(attrs={'placeholder': 'Activo'}),
         }
 
-    def __init__(self, *args, **kwargs):
-        super(ComentarioForm, self).__init__(*args, **kwargs)
-        self.fields['activo'].required = False
+    # def __init__(self, *args, **kwargs):
+    #     super(ComentarioForm, self).__init__(*args, **kwargs)
+    #     self.fields['activo'].required = False
+    #     if self.instance.usuario.is_authenticated:
+    #         self.fields['nombre'].widget.attrs['readonly'] = True
+    #         self.fields['email'].widget.attrs['readonly'] = True
 
 class PostFormEdit(forms.ModelForm):
 

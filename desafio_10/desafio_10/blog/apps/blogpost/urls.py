@@ -12,5 +12,7 @@ urlpatterns = [
     path('editar/<int:pk>/',views.editar_post,name='editar'),
     path('eliminar/<int:pk>/',views.eliminar_post,name='eliminar'),
     path('listar/',views.listar_post,name='listar'),
+    path('editarComentario/<int:pk>/',views.editarComentario,name='editarComentario'),
+    path('megustaComentario/<int:pk>/', views.megustaComentario, name='megustaComentario'),
 ]
     

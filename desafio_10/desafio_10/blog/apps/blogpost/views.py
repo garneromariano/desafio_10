@@ -4,12 +4,14 @@ from django.conf import settings
 from django.shortcuts import render,get_object_or_404, redirect
 
 from .forms import ComentarioForm, PostForm,PostFormEdit
-from .models import Post
+from .models import Post,Comentario,MeGustaComentario
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django .http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse
 from django.contrib import messages
+
+from django.http import JsonResponse
 
 # # Create your views here.
 # def inicio (request,post_id):
@@ -60,7 +62,7 @@ def detalle_post2(request,pk):
     return render(request,'blogpost/detalle_post.html',{'post':post,'comentarios':comentarios,'form':form})
 
 
-def detalle_post(request, pk):
+def detalle_post3(request, pk):
     post = Post.objects.get(id=pk) # Este es el nombre que asignamos en urls para el id
     comentarios = post.comentario.filter(activo=True)
 
@@ -75,7 +77,7 @@ def detalle_post(request, pk):
     else:
         form = ComentarioForm()
 
-    # Si el usuario no está autenticado, establecemos el formulario como Vacio
+    # Si el usuario no está autenticado, hacemos el formulario como Vacio
     if not request.user.is_authenticated:
         form = None
 
@@ -88,6 +90,60 @@ def detalle_post(request, pk):
 #     contexto['post'] = n
 
 #     return render(request, 'blogpost/detalle_post.html', contexto)
+def detalle_post2(request, pk):
+    post = Post.objects.get(id=pk)  # Este es el nombre que asignamos en urls para el id
+    comentarios = post.comentario.filter(activo=True)
+
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST)
+
+        if form.is_valid():
+            new_form = form.save(commit=False)
+            new_form.post = post
+
+            # Verificamos si el usuario está autenticado antes de asignarle el comentario
+            if request.user.is_authenticated:
+                new_form.usuario = request.user
+
+            new_form.save()
+            return HttpResponseRedirect(reverse('blogpost:detalle', args=[pk]))
+    else:
+        form = ComentarioForm()
+
+    
+    if request.user.is_authenticated:
+        user_comentarios = comentarios.filter(usuario=request.user)
+    else:
+        user_comentarios = None
+
+    return render(request, 'blogpost/detalle_post.html', {'post': post, 'comentarios': comentarios, 'form': form, 'user_comentarios': user_comentarios})
+    
+def detalle_post(request, pk):
+  
+    post = Post.objects.get(id=pk)
+    comentarios = post.comentario.filter(activo=True)
+
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST)
+
+        if form.is_valid():
+            new_form = form.save(commit=False)
+            new_form.post = post
+
+            if request.user.is_authenticated:
+                new_form.usuario = request.user  # Establecer el usuario del comentario
+
+            new_form.save()
+            return HttpResponseRedirect(reverse('blogpost:detalle', args=[pk]))
+    else:
+        form = ComentarioForm()
+
+    if request.user.is_authenticated:
+        user_comentarios = comentarios.filter(usuario=request.user)
+    else:
+        user_comentarios = None
+
+    return render(request, 'blogpost/detalle_post.html', {'post': post, 'comentarios': comentarios, 'form': form, 'user_comentarios': user_comentarios})
 
 @login_required
 @user_passes_test(lambda user: user.is_staff)
@@ -152,18 +208,23 @@ def editar_post(request, pk):
         form = PostFormEdit(request.POST, request.FILES, instance=post)
         
         if form.is_valid():
-            new_image = form.cleaned_data.get('imagen1')  # Usa 'imagen1' o 'imagen2' según corresponda
-            
+            new_image1 = form.cleaned_data.get('imagen1')  
+            new_image2 = form.cleaned_data.get('imagen2')  
             try:
                 # Elimina la imagen anterior solo si se carga una nueva imagen
-                if new_image:
-                    ruta_foto = os.path.join(settings.MEDIA_ROOT, 'blogpost', str(post.imagen1))
-                    if ruta_foto != os.path.join(settings.MEDIA_ROOT, 'blogpost', 'asd.jpg'):
-                        os.remove(ruta_foto)
+                if new_image1:
+                    ruta_foto1= os.path.join(settings.MEDIA_ROOT, 'blogpost', str(post.imagen1))
+                    if ruta_foto1 != os.path.join(settings.MEDIA_ROOT, 'blogpost', 'default.jpg'):
+                        os.remove(ruta_foto1)
+                if new_image2:
+                    ruta_foto2 = os.path.join(settings.MEDIA_ROOT, 'blogpost', str(post.imagen2))
+                    if ruta_foto2 != os.path.join(settings.MEDIA_ROOT, 'blogpost', 'default.jpg'):
+                        os.remove(ruta_foto2)        
             except:
                 pass
             
-            post.imagen1 = new_image  # Usa 'imagen1' o 'imagen2' según corresponda
+            post.imagen1 = new_image1
+            post.imagen2 = new_image2
             form.save()
             
             messages.success(request, 'Guardado correctamente')
@@ -185,3 +246,50 @@ def eliminar_post(request, pk):
         post.delete()
         return redirect('blogpost:listar')
     return render(request, 'blogpost/eliminar_post.html', {'post': post})
+
+@login_required
+def editarComentario(request, pk):
+    comentario = get_object_or_404(Comentario, pk=pk)
+        
+    if not request.user.is_authenticated or request.user != comentario.usuario:
+        return redirect('blogpost:detalle', pk=comentario.post.pk)
+
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST, instance=comentario)
+        if form.is_valid():
+            form.save()
+            return redirect('blogpost:detalle', pk=comentario.post.pk)
+    else:
+        form = ComentarioForm(instance=comentario)
+
+    return render(request, 'blogpost/editar_comentario.html', {'form': form})
+
+
+def megustaComentario(request, pk):
+
+    print(pk)
+    action = request.POST.get('action', None)
+    print(action)
+    if request.method == 'POST' and request.user.is_authenticated:
+        comentario = get_object_or_404(Comentario, pk=pk)
+        action = request.POST.get('action', None)
+
+        if action == 'like':
+            comentario.me_gusta.add(request.user)
+            comentario.no_megusta.remove(request.user)
+        elif action == 'unlike':
+            comentario.me_gusta.remove(request.user)
+            comentario.no_megusta.remove(request.user)
+        elif action == 'dislike':
+            comentario.no_megusta.add(request.user)
+            comentario.me_gusta.remove(request.user)
+        elif action == 'undislike':
+            comentario.no_megusta.remove(request.user)
+            comentario.me_gusta.remove(request.user)
+
+        return JsonResponse({
+            'likes': comentario.me_gusta.count(),
+            'dislikes': comentario.no_megusta.count(),
+        })
+    else:
+        return JsonResponse({'error': 'No se pudo procesar el me gusta.'}, status=400)

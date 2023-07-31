@@ -27,7 +27,7 @@ from django.db.models import Q
 
 def inicio(request):
     contexto = {}
-    id_categoria = request.GET.get('id')
+    id_categoria = request.GET.get('categoria_id')
     titulo_busqueda = request.GET.get('busqueda_titulo')
     print('id_categoria:', id_categoria)
     print('titulo_busqueda:', titulo_busqueda)
@@ -96,15 +96,17 @@ def crear_noticia(request):
 #    return render(request, 'noticias/listar_noticias.html', {'noticias': noticias})
 
 def listar_noticias(request):
-    categoria_seleccionada = request.GET.get('categoria')
+    categoria_seleccionada = request.GET.get('categoria_id')
+    print("Valor de categoria_seleccionada:", categoria_seleccionada)  # Agregar este print para depurar
+    
     noticias = Noticia.objects.all().order_by('-fecha')
     
-
     if categoria_seleccionada:
-        noticias = noticias.filter(categoria_noticia__id=categoria_seleccionada)
+        noticias = noticias.filter(categoria_noticia_id=categoria_seleccionada)
     
     paginator = Paginator(noticias, 10) 
     page_number = request.GET.get('page') 
+    
     try:
        page_obj = paginator.get_page(page_number)
     except PageNotAnInteger:
@@ -112,9 +114,7 @@ def listar_noticias(request):
     except EmptyPage:
          page_obj = paginator.get_page(paginator.num_pages)
 
-    
     categorias = Categoria.objects.all()    
-     
 
     return render(request, 'noticias/listar_noticias.html', {'page_obj': page_obj, 'categorias': categorias})
 

@@ -11,7 +11,7 @@ class Post(models.Model):
     autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     cuerpo=models.TextField()
     slug = models.SlugField()
-    fechaCreado= models.DateTimeField(auto_now_add=True,null=True)
+    fechaCreado= models.DateTimeField(auto_now_add=True, null=True) 
     titulo2 = models.CharField(max_length=255, null=True)
     subtituloGenral2 = models.CharField(max_length=255, null=True)
     cuerpo2 = models.TextField( null=True)

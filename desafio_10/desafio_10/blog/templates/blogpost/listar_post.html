@@ -46,7 +46,19 @@
 </div>
 
 <div class="container my-4">
+    <h2>Buscar por título</h2>
+    <form action="{% url 'blogpost:inicio' %}" method="get" class="d-flex align-items-center">
+      <input type="text" name="busqueda_titulo" class="form-control me-2" placeholder="Ingrese el título">
+      <button type="submit" class="btn btn-primary">Buscar</button>
+      <button  class="btn btn-primary ms-2">
+        <a class="dropdown-item" href="{%url 'blogpost:inicio'%}">Todas</a>        
+     </button> 
+     <a href="{% url 'blogpost:crear' %}" class="btn btn-success m-2">Crear</a>
+    </form>
+   
+   
  
+  </div>
     {% for Post in page_obj %}
       <div class="Post card text-center p-4 mb-4">
         <h2 class="Post-titulo"><a href="{% url 'blogpost:detalle' Post.pk %}">{{ Post.titulo }}</a></h2>

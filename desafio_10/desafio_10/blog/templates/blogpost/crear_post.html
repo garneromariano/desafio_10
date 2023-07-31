@@ -36,7 +36,7 @@ Crear noticia
  <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <form id="PostForm" action="{% url 'blogpost:crear_post' %}" method="post"enctype="multipart/form-data">
+            <form id="PostForm" action="{% url 'blogpost:crear' %}" method="post"enctype="multipart/form-data">
                 {% csrf_token %}
                 {% for field in form %}
                 <div class=" mb-3">

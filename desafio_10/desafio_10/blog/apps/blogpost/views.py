@@ -148,28 +148,25 @@ def detalle_post(request, pk):
 @login_required
 @user_passes_test(lambda user: user.is_staff)
 def crear_post(request):
-    data = {
-        'form': PostForm()
-    }
-
-    if request.method == 'POST':
+   if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
-        
         if form.is_valid():
-            new_image = form.cleaned_data.get('imagen') 
-                     
-           
-            noticia = form.save(commit=False)
-            noticia.imagen = new_image
-            noticia.save()
-            
+            post = form.save(commit=False)
+
+            post.imagen1 = form.cleaned_data.get('imagen1')
+            post.imagen2 = form.cleaned_data.get('imagen2')
+
+            post.save()
             messages.success(request, 'Guardado correctamente')
             return redirect('blogpost:listar')
         else:
-            data['form'] = form
             messages.error(request, 'No se pudo agregar. Verifica el formulario.')
-      
-    return render(request, 'blogpost/crear_post.html', data)
+   else:
+        form = PostForm()
+
+   data = {'form': form}
+    
+   return render(request, 'blogpost/crear_post.html', data)
 
 @login_required
 @user_passes_test(lambda user: user.is_staff)
@@ -241,11 +238,12 @@ def editar_post(request, pk):
 @login_required
 @user_passes_test(lambda user: user.is_staff)
 def eliminar_post(request, pk):
-    post = get_object_or_404(post, pk=pk)
+    post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
         post.delete()
         return redirect('blogpost:listar')
     return render(request, 'blogpost/eliminar_post.html', {'post': post})
+
 
 @login_required
 def editarComentario(request, pk):

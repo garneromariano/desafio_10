@@ -13,8 +13,7 @@ class PostForm(forms.ModelForm):
          } 
            
     def __init__(self, *args, **kwargs):
-        super(PostForm, self).__init__(*args, **kwargs)
-        self.fields['fechaCreado'].initial = date.today()
+        super(PostForm, self).__init__(*args, **kwargs)       
 
        
 

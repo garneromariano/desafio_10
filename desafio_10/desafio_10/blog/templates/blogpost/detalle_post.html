@@ -48,7 +48,10 @@
               
                 <h2 class="section-heading">{{ post.titulo2|default_if_none:"" }}</h2>
                 <p>{{ post.cuerpo2|default_if_none:"" }}</p>
-                <a href="#!"><img class="img-fluid" src= "{{ post.imagen2.url|default_if_none:"" }}" alt="..." /></a>
+                <a href="#!">
+                  <img class="img-fluid" src="{{ post.imagen2.url|default_if_none:'media/blogpost/default.png' }}" alt="..." />
+                 
+              </a>
                 <span class="caption text-muted">{{ post.pieDeFoto|default_if_none:"" }}</span>
                 <br>
                 <p>{{ post.pieDePosteo|default_if_none:"" }} </p>

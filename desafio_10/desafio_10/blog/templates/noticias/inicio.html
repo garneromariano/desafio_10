@@ -57,7 +57,7 @@
     {% for noticia in noticias %}
       <div class="noticia card text-center p-4 mb-4">
         <h2 class="noticia-titulo"><a href="{% url 'noticias:detalle' noticia.pk %}">{{ noticia.titulo }}</a></h2>
-        <p class="noticia-cuerpo">{{ noticia.cuerpo }}</p>
+        <p class="noticia-cuerpo">{{ noticia.cuerpo |slice:"200" }}...</p>
         <p class="noticia-fecha">{{ noticia.fecha }}</p>
         <p class="noticia-categoria">Categoría: {{ noticia.categoria_noticia }}</p>
         {% comment %} <img src="{{ noticia.imagen.url }}" alt="" class="img-fluid rounded"> {% endcomment %}

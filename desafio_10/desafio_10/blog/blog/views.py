@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from . import *
-from apps.blogpost.models import Post
+from apps.blogpost.models import Post,User
 
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
@@ -19,10 +19,13 @@ def inicio2 (request):
     return render(request,'home2.html',{'post':post})
 
 def nosostros1(request) :
-    return render(request,'nosotros2.html')
+    #return render(request,'nosotros2.html')
+    pass
 
 def nosostros2(request) :
-    return render(request,'nosotros2.html')
+    usuarios = User.objects.all()
+    context = {'usuarios': usuarios}
+    return render(request,'nosotros2.html',context)
 
 
 # redirect login

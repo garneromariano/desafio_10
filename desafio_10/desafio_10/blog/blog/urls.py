@@ -38,7 +38,8 @@ urlpatterns = [
     # recibe 3 parametros, funcion , y el nombre 
     #path de nosotros
   
-    path('nosotros1',views.nosostros1,name='nosotros1'),    
+    #path('nosotros1',views.nosostros1,name='nosotros1'),
+
     path('nosotros2',views.nosostros2,name='nosotros2'),
    
     # ----------- URL APP NOTICIAS ----------

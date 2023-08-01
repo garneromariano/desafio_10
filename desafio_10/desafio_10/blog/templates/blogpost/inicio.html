@@ -48,7 +48,7 @@
             <div class="post-preview">
                 <a href="{% url 'blogpost:detalle' cadaPost.id %}">
                     <h2 class="post-title">{{cadaPost.titulo}}</h2>
-                    <h3 class="post-subtitle">{{cadaPost.cuerpo |slice:"20" }}</h3>
+                    <h3 class="post-subtitle">{{cadaPost.cuerpo |slice:"20" }}...</h3>
                 </a>
                 <p class="post-meta">
                     Posteado por 
@@ -67,18 +67,18 @@
     </div>
 </div>
 
-{% if post_paginadas.has_other_pages %}
+{% if posteos.has_other_pages %}
   <div class="pagination-container text-center p-4 mb-4">
-    {% if post_paginadas.has_previous %}
+    {% if posteos.has_previous %}
       <a href="?page=1" class="btn btn-primary">&laquo; Primera</a>
-      <a href="?page={{ post_paginadas.previous_page_number }}" class="btn btn-primary">Anterior</a>
+      <a href="?page={{ posteos.previous_page_number }}" class="btn btn-primary">Anterior</a>
     {% endif %}
 
-    <span class="current-page btn btn-primary">{{ post_paginadas.number }}</span>
+    <span class="current-page btn btn-primary">{{ posteos.number }}</span>
 
-    {% if post_paginadas.has_next %}
-      <a href="?page={{ post_paginadas.next_page_number }}" class="btn btn-primary">Siguiente</a>
-      <a href="?page={{ post_paginadas.paginator.num_pages }}" class="btn btn-primary">Última &raquo;</a>
+    {% if posteos.has_next %}
+      <a href="?page={{ posteos.next_page_number }}" class="btn btn-primary">Siguiente</a>
+      <a href="?page={{ posteos.paginator.num_pages }}" class="btn btn-primary">Última &raquo;</a>
     {% endif %}
   </div>
 {% endif %}

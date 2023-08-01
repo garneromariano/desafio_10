@@ -43,7 +43,7 @@
     <div class="col-md-6">
         <h2>Categorias</h2>
         <form action="{% url 'noticias:listar_noticias' %}" method="get" class="d-flex align-items-center">
-            <select name="categoria" class="form-select me-2" id="select-categoria">
+            <select name="categoria_id" name="categoria" class="form-select me-2" id="select-categoria">
                 <option value="">Seleccione...</option>
                 {% for categoria in categorias %}
                 <option value="{{ categoria.pk }}">{{ categoria.nombre }}</option>
@@ -96,5 +96,14 @@
   </div>
 {% endif %}
 
-
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const selectCategoria = document.getElementById('select-categoria');
+    
+        selectCategoria.addEventListener('change', () => {
+            const form = selectCategoria.closest('form');
+            form.submit();
+        });
+    });
+    </script>
 {% endblock contenido %}

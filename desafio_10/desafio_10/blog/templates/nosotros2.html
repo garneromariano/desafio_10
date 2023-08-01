@@ -41,24 +41,33 @@
     </div>
 </header>
 <!-- Main Content-->
-<main class="mb-4">
-    <div class="container px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
-                <div class="xd">
-                    <h1>Grupo 10:  Unidos para Lograr Nuestros Objetivos</h1>
+<div class="container py-5">
+    <div class="row justify-content-center">
+
+        <!-- Cards Section -->
+        <div class="col-md-12">
+
+            
+
+          
+
+
+        
+            <div class="col-md-12 col-lg-12 col-xl-12">
+                <div class="xd ">
+                    <h1>Grupo 10: Unidos para Lograr Nuestros Objetivos</h1>                                  
                     <p class=".pd">
                         En el corazón de nuestro grupo, se encuentra la fuerza de la unidad y la colaboración. Somos el Grupo 10,
                         un equipo integrado por Mariano, Walter, Jorge, Nicolás y Franco, estudiantes del Informatorio 2023. Este
                         curso de Python nos ha brindado la oportunidad de trabajar juntos en un proyecto de creación de un blog con
                         noticias.
-                       </p>
+                    </p>
                     <p class=".pd"> 
                         Estamos entusiasmados con el aprendizaje que estamos obteniendo y el progreso que hemos logrado hasta
                         ahora. Destacamos que trabajar en equipo ha sido fundamental para alcanzar nuestros objetivos de manera más
                         efectiva. Al unir nuestras fortalezas individuales, hemos podido abordar los desafíos del curso y del
                         proyecto de manera más sólida y creativa.
-                      </p>
+                    </p>
                     <p class=".pd"> 
                         La confianza es el cimiento sobre el cual construimos nuestro grupo. Nos apoyamos mutuamente en cada paso del camino, brindando un ambiente seguro y motivador para expresar nuestras ideas y opiniones. Celebramos los éxitos colectivamente y encontramos lecciones valiosas en los desafíos que enfrentamos. En cada obstáculo, nos convertimos en un escudo de apoyo, impulsándonos unos a otros hacia adelante con un espíritu de resiliencia y determinación. 
                     </p>
@@ -76,12 +85,82 @@
                         Estamos emocionados por lo que vendrá en nuestro camino como equipo y como estudiantes del Informatorio
                         2023. Seguiremos trabajando en conjunto, apoyándonos mutuamente y aprovechando al máximo esta valiosa
                         experiencia de aprendizaje colaborativo.
-                     </p>
+                    </p>
+                        
                     
-            
                 </div>
             </div>
-        </div>
+
+
+            <h1 class="text-center m-50">Colaboradores</h1>
+
+            <div class="row mt-0 row-cols-1 row-cols-md-2 row-cols-lg-2 g-4">
+                {% for usuario in usuarios %}
+                    {% if usuario.is_staff %}
+                    <div class="col mb-4">
+                        <div class="card h-100" style="border-radius: .5rem;">
+                            <div class="row g-0">
+                                <div class="col-md-4 gradient-custom text-center text-white" style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+                                    {% if usuario.imagen %}
+                                        <img src="{{ usuario.imagen.url }}" alt="Avatar" class="img-fluid my-4" style="width: 80px;" />
+                                    {% else %}
+                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp" alt="Avatar" class="img-fluid my-4" style="width: 80px;" />
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body p-4">
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                <h6 class="mb-0">Información</h6>
+                                            </div>
+                                            <div class="col-8">                                            
+                                                <p class="text-muted mb-0">{{ usuario.first_name }}</p>
+                                                <p class="text-muted mb-0">{{ usuario.last_name }}</p>
+                                            </div>
+                                        </div>                                                                     
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                <h6 class="mb-0">Email</h6>
+                                            </div>
+                                            <div class="col-8">                                            
+                                                <p class="text-muted mb-0">{{ usuario.email }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-4">
+                                                <h6 class="mb-0">Telefono</h6>
+                                            </div>
+                                            <div class="col-8">
+                                                <p class="text-muted mb-0">123 456 789</p>
+                                            </div>
+                                        </div>
+                                        <h6 class="mb-3">Proyectos</h6>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <h6 class="mb-0">Reciente</h6>
+                                                <p class="text-muted">Informatorio</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <h6 class="mb-0">Cloud</h6>
+                                                <p class="text-muted">IA</p>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-start mt-4">
+                                            <a href="{{ usuario.facebook }}"><i class="fab fa-facebook-f fa-lg me-3"></i></a>
+                                            <a href="https://wa.me/{{ usuario.whatsapp }}"><i class="fab fa-whatsapp fa-lg me-3"></i></a>
+                                            <a href="{{ usuario.instagram }}"><i class="fab fa-instagram fa-lg"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        
     </div>
-</main>
+ 
+</div>
+   
 {% endblock contenido %}

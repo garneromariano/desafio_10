@@ -41,42 +41,66 @@
             <div class="col-lg-6 mb-5 mb-lg-0 h-100 d-flex align-items-center">
                 <div class="card">
                     <div class="card-body py-5 px-md-5">
-                        <form method="post">
+                        <form method="post" enctype="multipart/form-data" class="row g-3">
                             {% csrf_token %}
-                            {{ form.as_p }}
-                            <!-- Checkbox -->
-                            <div class="form-check d-flex justify-content-center mb-4">
-                                <input class="form-check-input me-2" type="checkbox" name="subscribe" id="form2Example33" checked />
-                                <label class="form-check-label" for="form2Example33">
-                                    Recibir info
-                                </label>
+                            <div class="col-md-12">
+                                {{ form.first_name.label_tag }}
+                                {{ form.first_name }}
                             </div>
-            
+                            <div class="col-md-12">
+                                {{ form.last_name.label_tag }}
+                                {{ form.last_name }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form.username.label_tag }}
+                                {{ form.username }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form.email.label_tag }}
+                                {{ form.email }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form.password1.label_tag }}
+                                {{ form.password1 }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form.password2.label_tag }}
+                                {{ form.password2 }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form.imagen.label_tag }}
+                                {{ form.imagen }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form.facebook.label_tag }}
+                                {{ form.facebook }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form.whatsapp.label_tag }}
+                                {{ form.whatsapp }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form.instagram.label_tag }}
+                                {{ form.instagram }}
+                            </div>
+                        
+                            <!-- Checkbox -->
+                            <div class="col-12 d-flex justify-content-center mb-4">
+                                <div class="form-check">
+                                    {{ form.subscribe }}
+                                    <label class="form-check-label" for="{{ form.subscribe.id_for_label }}">
+                                        Recibir información
+                                    </label>
+                                </div>
+                            </div>
+                        
                             <!-- Submit button -->
-                            <button type="submit" class="btn btn-primary btn-block mb-4">
-                                Registrar
-                            </button>
-            
-                            <!-- Register buttons 
-                            <div class="text-center">
-                                <p>or sign up with:</p>
-                                <button type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fab fa-facebook-f"></i>
-                                </button>
-            
-                                <button type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fab fa-google"></i>
-                                </button>
-            
-                                <button type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fab fa-twitter"></i>
-                                </button>
-            
-                                <button type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fab fa-github"></i>
-                                </button>
-                            </div>-->
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-primary btn-block mb-4">Registrar</button>
+                            </div>
                         </form>
+
+                        
                     </div>
                 </div>
             </div>

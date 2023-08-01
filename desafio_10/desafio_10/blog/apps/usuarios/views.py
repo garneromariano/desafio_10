@@ -19,5 +19,11 @@ class Registro(CreateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         user = form.save()
+
+        #agregamo la imagen
+        if 'imagen' in self.request.FILES:
+            user.imagen = self.request.FILES['imagen']
+            user.save()
+            
         login(self.request, user)  # Iniciar sesión automáticamente después del registro exitoso
         return response

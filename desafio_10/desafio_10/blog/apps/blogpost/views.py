@@ -3,8 +3,8 @@ import os
 from django.conf import settings
 from django.shortcuts import render,get_object_or_404, redirect
 
-from .forms import ComentarioForm, PostForm,PostFormEdit
-from .models import Post,Comentario,MeGustaComentario
+from .forms import ComentarioForm, PostForm,PostFormEdit,CategoriasForm
+from .models import Post,Comentario,MeGustaComentario,Categoria
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django .http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -291,3 +291,53 @@ def megustaComentario(request, pk):
         })
     else:
         return JsonResponse({'error': 'No se pudo procesar el me gusta.'}, status=400)
+    
+
+
+# seccion categorias para Blog
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def categoria_listar(request):
+    categorias = Categoria.objects.all()
+    return render(request, 'blogpost/categorias_Blog/listar_categoria.html', {'categorias': categorias})
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def categoria_detalle(request, pk):
+    categoria = get_object_or_404(Categoria, pk=pk)
+    print(categoria)
+    return render(request, 'blogpost/categorias_Blog/detalle_categoria.html', {'categoria': categoria})
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def categoria_crear(request):
+    if request.method == 'POST':
+        form = CategoriasForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('blogpost:categoria_listar')
+    else:
+        form = CategoriasForm()
+    return render(request, 'blogpost/categorias_Blog/crear_editar_categoria.html', {'form': form})
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def categoria_Editar(request, pk):
+    categoria = get_object_or_404(Categoria, pk=pk)
+    if request.method == 'POST':
+        form = CategoriasForm(request.POST, instance=categoria)
+        if form.is_valid():
+            form.save()
+            return redirect('blogpost:categoria_listar')
+    else:
+        form = CategoriasForm(instance=categoria)
+    return render(request, 'blogpost/categorias_Blog/crear_editar_categoria.html', {'form': form})
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def categoria_Eliminar(request, pk):
+    categoria = get_object_or_404(Categoria, pk=pk)
+    if request.method == 'POST':
+        categoria.delete()
+        return redirect('categoria_listar')
+    return render(request, 'blogpost/categorias_Blog/categoria_confirm_delete.html', {'categoria': categoria})    

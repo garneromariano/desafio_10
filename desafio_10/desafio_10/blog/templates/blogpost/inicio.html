@@ -27,6 +27,10 @@
 
 
  {% block contenido %}
+
+
+
+ 
    <!-- Main Content-->
    <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -48,6 +52,7 @@
             <div class="post-preview">
                 <a href="{% url 'blogpost:detalle' cadaPost.id %}">
                     <h2 class="post-title">{{cadaPost.titulo}}</h2>
+                    <h2 class="post-title">Categoria : {{cadaPost.categoria.nombre}}</h2>
                     <h3 class="post-subtitle">{{cadaPost.cuerpo |slice:"20" }}...</h3>
                 </a>
                 <p class="post-meta">

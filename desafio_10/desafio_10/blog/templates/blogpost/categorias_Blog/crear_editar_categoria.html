@@ -1,0 +1,51 @@
+{%extends 'base2.html' %}
+
+{% load static %}
+
+{%block titulo %} 
+
+<title>{% if form.instance.pk %}Editar{% else %}Crear{% endif %} Categoria</title>
+
+{% endblock titulo%}
+
+
+
+{%block head %} 
+ <!-- Page Header-->
+ <header class="masthead" style="background-image: url('static/image/home Grupo10.jpg')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>INFORMATORIO</h1>
+                    <h2>Categorias del Blog</h2>
+                    <span class="subheading">Un Blog Para todos</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+{% endblock head%}
+
+
+
+
+ {% block contenido %}
+  
+ <div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1>{% if form.instance.pk %}Editar{% else %}Crear{% endif %} Categoria</h1>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">{% if form.instance.pk %}Actualizar{% else %}Crear{% endif %}</button>
+            </form>
+            <a href="{% url 'blogpost:categoria_listar' %}">Cancelar</a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock contenido %}

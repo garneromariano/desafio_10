@@ -25,7 +25,8 @@ class Post(models.Model):
     imagen2 = models.ImageField(upload_to='blogpost/', null=True)
     pieDeFoto = models.CharField(max_length=255,null=True)
     pieDePosteo=models.TextField(null=True)
-    #categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True)
+    #categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True) #como la bd ya estaba, 
+    # primero agrego asi seteo to2s los post a una cat y luego vuelvo a migrar y poner que no permita null XD
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     # def __str__(self):
     #      return  "post de " + ' | ' + self.autor +  ' | ' +  self.titulo

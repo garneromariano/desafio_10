@@ -95,8 +95,9 @@
             <h1 class="text-center m-50">Colaboradores</h1>
 
             <div class="row mt-0 row-cols-1 row-cols-md-2 row-cols-lg-2 g-4">
+                
                 {% for usuario in usuarios %}
-                    {% if usuario.is_staff %}
+                {% if usuario.perfil == 'colaborador' %}
                     <div class="col mb-4">
                         <div class="card h-100" style="border-radius: .5rem;">
                             <div class="row g-0">

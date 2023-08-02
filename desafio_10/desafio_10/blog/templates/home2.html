@@ -31,14 +31,17 @@
    <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
-           
-                <div class="video-container">
-                    <h1 class="text-center">PRESENTACIÓN</h1>
-                    <iframe width="700" height="500" 
+            <h1 class="text-center">PRESENTACIÓN</h1>
+            <div class="video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+                <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
                     src="https://www.youtube.com/embed/18LK2mtptSc" 
-                    title="[4K] Beauty Of Nature | Time-Lapse | Drone Aerial View | Free HD Videos - No Copyright" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>     
-                  </div>
-                {% for cadaPost in post %}
+                    title="[4K] Beauty Of Nature | Time-Lapse | Drone Aerial View | Free HD Videos - No Copyright" frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+            
+            {% for cadaPost in post %}
                 <div class="post-preview">
                     <a href="{% url 'blogpost:detalle' cadaPost.id %}">
                         <h2 class="post-title">{{cadaPost.titulo}}</h2>
@@ -50,9 +53,7 @@
                         {{cadaPost.fechaCreado}}
                     </p>
                 </div>
-              {% endfor %}
-              
-                
+            {% endfor %}
             
             <!-- Divider-->
             <hr class="my-4" />

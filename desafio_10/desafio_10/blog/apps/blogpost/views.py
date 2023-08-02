@@ -370,3 +370,10 @@ def categoria_Eliminar(request, pk):
         categoria.delete()
         return redirect('categoria_listar')
     return render(request, 'blogpost/categorias_Blog/categoria_confirm_delete.html', {'categoria': categoria})    
+
+
+def custom_404(request, exception):
+    return render(request, 'errors/404.html', status=404)    
+
+def custom_500(request):
+    return render(request, 'errors/500.html', status=500)

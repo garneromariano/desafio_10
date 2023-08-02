@@ -170,3 +170,9 @@ def eliminar_noticia(request, pk):
         noticia.delete()
         return redirect('noticias:listar_noticias')
     return render(request, 'noticias/eliminar_noticia.html', {'noticia': noticia})
+
+def custom_404(request, exception):
+    return render(request, 'errors/404.html', status=404)    
+
+def custom_500(request):
+    return render(request, 'errors/500.html', status=500)

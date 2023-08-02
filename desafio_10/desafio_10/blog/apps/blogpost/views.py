@@ -3,8 +3,8 @@ import os
 from django.conf import settings
 from django.shortcuts import render,get_object_or_404, redirect
 
-from .forms import ComentarioForm, PostForm,PostFormEdit
-from .models import Post,Comentario,MeGustaComentario
+from .forms import ComentarioForm, PostForm,PostFormEdit,CategoriasForm
+from .models import Post,Comentario,MeGustaComentario,Categoria
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django .http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -21,21 +21,45 @@ from django.http import JsonResponse
 
 def inicio(request):
     contexto = {}
-    post= Post.objects.all()
+    id_categoria = request.GET.get('categoria_id')
     titulo_busqueda = request.GET.get('busqueda_titulo')
+    cantidadPorPagina = 3
+    post= Post.objects.all()
+
+    print('id_categoria:', id_categoria)
+    print('titulo_busqueda:', titulo_busqueda)
     
+    post = post.order_by('-fechaCreado')
+    
+    if id_categoria:
+        post = post.filter(categoria=id_categoria)
     if titulo_busqueda:
         post = post.filter(titulo__icontains=titulo_busqueda)
 
-    
-    post = post.order_by('-fechaCreado')
+    fecha_orden = request.GET.get('fecha_orden')
 
-    paginator = Paginator(post, 3)  
+    if fecha_orden == 'asc':
+        post = post.order_by('fechaCreado')
+    elif fecha_orden == 'desc':
+        post = post.order_by('-fechaCreado') 
+
+    titulo_orden = request.GET.get('titulo_orden')
+
+    if titulo_orden == 'asc':
+        post = post.order_by('titulo')
+    elif titulo_orden == 'desc':
+        post = post.order_by('-titulo')
+
+    paginator = Paginator(post, cantidadPorPagina)
+    
 
     page_number = request.GET.get('page')
     post_paginadas = paginator.get_page(page_number)
 
-    contexto['posteos'] = post_paginadas    
+    contexto['posteos'] = post_paginadas 
+    categorias = Categoria.objects.all().order_by('nombre')   
+    contexto['categorias'] = categorias
+
     #print(post_paginadas[0])
 
     #print(post)
@@ -291,3 +315,53 @@ def megustaComentario(request, pk):
         })
     else:
         return JsonResponse({'error': 'No se pudo procesar el me gusta.'}, status=400)
+    
+
+
+# seccion categorias para Blog
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def categoria_listar(request):
+    categorias = Categoria.objects.all()
+    return render(request, 'blogpost/categorias_Blog/listar_categoria.html', {'categorias': categorias})
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def categoria_detalle(request, pk):
+    categoria = get_object_or_404(Categoria, pk=pk)
+    print(categoria)
+    return render(request, 'blogpost/categorias_Blog/detalle_categoria.html', {'categoria': categoria})
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def categoria_crear(request):
+    if request.method == 'POST':
+        form = CategoriasForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('blogpost:categoria_listar')
+    else:
+        form = CategoriasForm()
+    return render(request, 'blogpost/categorias_Blog/crear_editar_categoria.html', {'form': form})
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def categoria_Editar(request, pk):
+    categoria = get_object_or_404(Categoria, pk=pk)
+    if request.method == 'POST':
+        form = CategoriasForm(request.POST, instance=categoria)
+        if form.is_valid():
+            form.save()
+            return redirect('blogpost:categoria_listar')
+    else:
+        form = CategoriasForm(instance=categoria)
+    return render(request, 'blogpost/categorias_Blog/crear_editar_categoria.html', {'form': form})
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def categoria_Eliminar(request, pk):
+    categoria = get_object_or_404(Categoria, pk=pk)
+    if request.method == 'POST':
+        categoria.delete()
+        return redirect('categoria_listar')
+    return render(request, 'blogpost/categorias_Blog/categoria_confirm_delete.html', {'categoria': categoria})    

@@ -60,6 +60,7 @@
         <p class="noticia-cuerpo">{{ noticia.cuerpo |slice:"200" }}...</p>
         <p class="noticia-fecha">{{ noticia.fecha }}</p>
         <p class="noticia-categoria">Categoría: {{ noticia.categoria_noticia }}</p>
+       
         {% comment %} <img src="{{ noticia.imagen.url }}" alt="" class="img-fluid rounded"> {% endcomment %}
         {% if noticia.imagen %}
             <img src="{{ noticia.imagen.url }}" alt="" class="img-fluid rounded">
@@ -74,18 +75,20 @@
 {% if noticias.has_other_pages %}
   <div class="pagination-container text-center p-4 mb-4">
     {% if noticias.has_previous %}
-      <a href="?page=1" class="btn btn-primary">&laquo; Primera</a>
-      <a href="?page={{ noticias.previous_page_number }}" class="btn btn-primary">Anterior</a>
+      <a href="?{{ request.GET.urlencode }}&page=1" class="btn btn-primary">&laquo; Primera</a>
+      <a href="??{{ request.GET.urlencode }}&page={{ noticias.previous_page_number }}" class="btn btn-primary">Anterior</a>
     {% endif %}
 
     <span class="current-page btn btn-primary">{{ noticias.number }}</span>
 
     {% if noticias.has_next %}
-      <a href="?page={{ noticias.next_page_number }}" class="btn btn-primary">Siguiente</a>
-      <a href="?page={{ noticias.paginator.num_pages }}" class="btn btn-primary">Última &raquo;</a>
+      <a href="?{{ request.GET.urlencode }}&page={{ noticias.next_page_number }}" class="btn btn-primary">Siguiente</a>
+      <a href="?{{ request.GET.urlencode }}&page={{ noticias.paginator.num_pages }}" class="btn btn-primary">Última &raquo;</a>
     {% endif %}
   </div>
 {% endif %}
+
+
     
 <script>
   document.addEventListener('DOMContentLoaded', () => {

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post,Comentario
+from .models import Post,Comentario,Categoria
 from datetime import date
 from django.forms import ModelForm
 
@@ -44,3 +44,7 @@ class PostFormEdit(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(PostFormEdit, self).__init__(*args, **kwargs)
         
+class CategoriasForm(forms.ModelForm):
+    class Meta:
+        model = Categoria
+        fields = ['nombre']        

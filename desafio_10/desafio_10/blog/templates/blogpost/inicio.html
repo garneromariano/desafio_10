@@ -27,27 +27,66 @@
 
 
  {% block contenido %}
+
+ <div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6"> 
+      <div class="card p-3 mb-3">
+        <h2>Categorías</h2>
+        <form action="{% url 'blogpost:inicio' %}" method="get" class="d-flex align-items-center">
+          <select name="categoria_id" class="form-select" id="select-categoria">
+            <option value="">Seleccione</option>
+            {% for c in categorias %}
+            <option value="{{ c.pk }}">{{ c.nombre }}</option>
+            {% endfor %}
+          </select>
+          <button type="submit" class="btn btn-primary ms-2">Todas</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-6 mt-3 mt-md-0"> 
+      <div class="card p-3 mb-3">
+        <h2>Buscar por título</h2>
+        <form action="{% url 'blogpost:inicio' %}" method="get" class="d-flex align-items-center">
+          <input type="text" name="busqueda_titulo" class="form-control me-2" placeholder="Ingrese el título">
+          <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+      <div class="card p-3 mb-3">
+        <h2>Ordenar por fecha:</h2>
+        <a href="?fecha_orden=asc" class="btn btn-primary">Fecha ascendente</a>
+        <a href="?fecha_orden=desc" class="btn btn-success">Fecha descendente</a>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="card p-3 mb-3">
+        <h2>Ordenar por título:</h2>
+        <a href="?titulo_orden=asc" class="btn btn-primary">Título ascendente</a>
+        <a href="?titulo_orden=desc" class="btn btn-success">Título descendente</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+ 
    <!-- Main Content-->
    <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
-            <div class="col-md-6 mt-6 mt-md-0"> 
-                <h2>Buscar por título</h2>
-                <form action="{% url 'blogpost:inicio' %}" method="get" class="d-flex align-items-center">
-                  <input type="text" name="busqueda_titulo" class="form-control me-2" placeholder="Ingrese el título">
-                  <button type="submit" class="btn btn-primary">Buscar</button>
-                  <button  class="btn btn-primary ms-2">
-                    <a class="dropdown-item" href="{%url 'blogpost:inicio'%}">Todas</a>
-                 </button> 
-                </form>
-                
-             
-              </div>
+
             
             {% for cadaPost in posteos %}
             <div class="post-preview">
                 <a href="{% url 'blogpost:detalle' cadaPost.id %}">
                     <h2 class="post-title">{{cadaPost.titulo}}</h2>
+                    <h2 class="post-title">Categoria : {{cadaPost.categoria.nombre}}</h2>
                     <h3 class="post-subtitle">{{cadaPost.cuerpo |slice:"20" }}...</h3>
                 </a>
                 <p class="post-meta">
@@ -64,23 +103,38 @@
             <!-- Pager-->
             <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="{% url  'contactos:contacto' %}">Sugerencia ?  →</a></div>
         </div>
+
+
+
+
     </div>
 </div>
 
 {% if posteos.has_other_pages %}
   <div class="pagination-container text-center p-4 mb-4">
     {% if posteos.has_previous %}
-      <a href="?page=1" class="btn btn-primary">&laquo; Primera</a>
-      <a href="?page={{ posteos.previous_page_number }}" class="btn btn-primary">Anterior</a>
+      <a href="?{{ request.GET.urlencode }}&page=1" class="btn btn-primary">&laquo; Primera</a>
+      <a href="?{{ request.GET.urlencode }}&page={{ posteos.previous_page_number }}" class="btn btn-primary">Anterior</a>
     {% endif %}
 
     <span class="current-page btn btn-primary">{{ posteos.number }}</span>
 
     {% if posteos.has_next %}
-      <a href="?page={{ posteos.next_page_number }}" class="btn btn-primary">Siguiente</a>
-      <a href="?page={{ posteos.paginator.num_pages }}" class="btn btn-primary">Última &raquo;</a>
+      <a href="?{{ request.GET.urlencode }}&page={{ posteos.next_page_number }}" class="btn btn-primary">Siguiente</a>
+      <a href="?{{ request.GET.urlencode }}&page={{ posteos.paginator.num_pages }}" class="btn btn-primary">Última &raquo;</a>
     {% endif %}
   </div>
 {% endif %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      const selectCategoria = document.getElementById('select-categoria');
+  
+      selectCategoria.addEventListener('change', () => {
+          const form = selectCategoria.closest('form');
+          form.submit();
+      });
+  });
+  </script>
 
 {% endblock contenido %}

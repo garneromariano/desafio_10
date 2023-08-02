@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from .forms import NoticiaForm
 from django.contrib import messages
 
+from apps.usuarios.utilidades import es_colaborador, es_miembro, es_visitante,es_miembro_o_colaborador
+
 import os
 from django.conf import settings
 from django.db.models import Q
@@ -64,7 +66,7 @@ def Detalle_Noticias(request, pk):
     return render(request, 'noticias/detalle.html', contexto)
 
 @login_required
-@user_passes_test(lambda user: user.is_staff)
+@user_passes_test(es_colaborador)
 def crear_noticia(request):
     data = {
         'form': NoticiaForm()
@@ -90,7 +92,7 @@ def crear_noticia(request):
     return render(request, 'noticias/crear_noticia.html', data)
 
 @login_required
-@user_passes_test(lambda user: user.is_staff)
+@user_passes_test(es_colaborador)
 #def listar_noticias(request):
 #    noticias = Noticia.objects.all()
 #    return render(request, 'noticias/listar_noticias.html', {'noticias': noticias})
@@ -119,13 +121,13 @@ def listar_noticias(request):
     return render(request, 'noticias/listar_noticias.html', {'page_obj': page_obj, 'categorias': categorias})
 
 @login_required
-@user_passes_test(lambda user: user.is_staff)
+@user_passes_test(es_colaborador)
 def ver_noticia(request, pk):
     noticia = get_object_or_404(Noticia, pk=pk)    
     return render(request, 'noticias/ver_noticia.html', {'noticia': noticia})
 
 @login_required
-@user_passes_test(lambda user: user.is_staff)
+@user_passes_test(es_colaborador)
 def editar_noticia(request, pk):
     noticia = get_object_or_404(Noticia, pk=pk)
     
@@ -161,7 +163,7 @@ def editar_noticia(request, pk):
 
 
 @login_required
-@user_passes_test(lambda user: user.is_staff)
+@user_passes_test(es_colaborador)
 def eliminar_noticia(request, pk):
     noticia = get_object_or_404(Noticia, pk=pk)
     if request.method == 'POST':

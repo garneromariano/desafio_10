@@ -11,6 +11,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse
 from django.contrib import messages
 
+from apps.usuarios.utilidades import es_colaborador, es_miembro, es_visitante,es_miembro_o_colaborador
+
 from django.http import JsonResponse
 
 # # Create your views here.
@@ -141,7 +143,8 @@ def detalle_post2(request, pk):
         user_comentarios = None
 
     return render(request, 'blogpost/detalle_post.html', {'post': post, 'comentarios': comentarios, 'form': form, 'user_comentarios': user_comentarios})
-    
+
+
 def detalle_post(request, pk):
   
     post = Post.objects.get(id=pk)
@@ -170,7 +173,8 @@ def detalle_post(request, pk):
     return render(request, 'blogpost/detalle_post.html', {'post': post, 'comentarios': comentarios, 'form': form, 'user_comentarios': user_comentarios})
 
 @login_required
-@user_passes_test(lambda user: user.is_staff)
+#@user_passes_test(lambda user: user.is_staff)
+@user_passes_test(es_colaborador)
 def crear_post(request):
    if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
@@ -193,7 +197,7 @@ def crear_post(request):
    return render(request, 'blogpost/crear_post.html', data)
 
 @login_required
-@user_passes_test(lambda user: user.is_staff)
+@user_passes_test(es_colaborador)
 def listar_post(request):
     
     post = Post.objects.all().order_by('-fechaCreado')
@@ -211,13 +215,13 @@ def listar_post(request):
     return render(request, 'blogpost/listar_post.html', {'page_obj': page_obj})
 
 @login_required
-@user_passes_test(lambda user: user.is_staff)
+@user_passes_test(es_colaborador)
 def ver_post(request, pk):
     post = get_object_or_404(Post, pk=pk)    
     return render(request, 'blogpost/ver_post.html', {'noticia': post})
 
 @login_required
-@user_passes_test(lambda user: user.is_staff)
+@user_passes_test(es_colaborador)
 def editar_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     print(pk)
@@ -260,7 +264,7 @@ def editar_post(request, pk):
 
 
 @login_required
-@user_passes_test(lambda user: user.is_staff)
+@user_passes_test(es_colaborador)
 def eliminar_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
@@ -270,6 +274,7 @@ def eliminar_post(request, pk):
 
 
 @login_required
+@user_passes_test(es_miembro_o_colaborador)
 def editarComentario(request, pk):
     comentario = get_object_or_404(Comentario, pk=pk)
         
@@ -320,20 +325,20 @@ def megustaComentario(request, pk):
 
 # seccion categorias para Blog
 @login_required
-@user_passes_test(lambda user: user.is_staff)
+@user_passes_test(es_colaborador)
 def categoria_listar(request):
     categorias = Categoria.objects.all()
     return render(request, 'blogpost/categorias_Blog/listar_categoria.html', {'categorias': categorias})
 
 @login_required
-@user_passes_test(lambda user: user.is_staff)
+@user_passes_test(es_colaborador)
 def categoria_detalle(request, pk):
     categoria = get_object_or_404(Categoria, pk=pk)
     print(categoria)
     return render(request, 'blogpost/categorias_Blog/detalle_categoria.html', {'categoria': categoria})
 
 @login_required
-@user_passes_test(lambda user: user.is_staff)
+@user_passes_test(es_colaborador)
 def categoria_crear(request):
     if request.method == 'POST':
         form = CategoriasForm(request.POST)
@@ -345,7 +350,7 @@ def categoria_crear(request):
     return render(request, 'blogpost/categorias_Blog/crear_editar_categoria.html', {'form': form})
 
 @login_required
-@user_passes_test(lambda user: user.is_staff)
+@user_passes_test(es_colaborador)
 def categoria_Editar(request, pk):
     categoria = get_object_or_404(Categoria, pk=pk)
     if request.method == 'POST':
@@ -358,7 +363,7 @@ def categoria_Editar(request, pk):
     return render(request, 'blogpost/categorias_Blog/crear_editar_categoria.html', {'form': form})
 
 @login_required
-@user_passes_test(lambda user: user.is_staff)
+@user_passes_test(es_colaborador)
 def categoria_Eliminar(request, pk):
     categoria = get_object_or_404(Categoria, pk=pk)
     if request.method == 'POST':

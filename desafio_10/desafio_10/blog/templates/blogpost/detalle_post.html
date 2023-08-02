@@ -96,6 +96,7 @@
                                     {% endif %}
 
                                     {% if user.is_authenticated %}
+                                    
                                     <a href="#!" class="link-muted me-gusta-link"
                                       data-action="{% if user in comentario.me_gusta.all %}unlike{% else %}like{% endif %}"
                                       data-comentario-id="{{ comentario.pk }}">
@@ -105,6 +106,7 @@
                                       </span> Me gusta
                                     </a>
                                    {% endif %}
+                                   
                                     <!-- <a href="#!" class="link-muted"><i class="fas fa-redo-alt ms-2"></i></a> -->
                                     
                                   </div>
@@ -127,45 +129,46 @@
                     </div>
                   </section>
                       
-                  {% if user.is_authenticated %}
-
-                    {% if form %}
-                      <form method="post">
-                        {% csrf_token %}
-                        <div class="row mb-3">
-                          <div class="col-md-6">
-                            <label>{{ form.nombre.label }}</label>
-                            <input type="text" class="form-control" value="{{ user.get_username }}" readonly>
-                          </div>
-                          <div class="col-md-6">
-                            <label>{{ form.email.label }}</label>
-                            <input type="text" class="form-control" value="{{ user.email }}" readonly>
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <div class="col-md-12">
-                            <label>{{ form.contenido.label }}</label>
-                            <textarea name="{{ form.contenido.name }}" class="form-control" rows="4" placeholder="{{ form.contenido.label }}"></textarea>
-                          </div>
-                        </div>
-                        <div class="form-check">
-                          <input type="checkbox" name="{{ form.activo.name }}" class="form-check-input" id="id_activo">
-                          <label class="form-check-label" for="id_activo">{{ form.activo.label }}</label>
-                        </div>
-                        <input class="btn btn-primary" type="submit" name="Enviar" value="Comentar">
-                      </form>
-                    {% else %}
-                      <p>No hay comentarios todavía.</p>
-                    {% endif %}
-                  {% else %}
+                 
+                      {% if user.perfil == 'miembro' or user.perfil == 'colaborador' %}
+                          {% if form %}
+                            <form method="post">
+                              {% csrf_token %}
+                              <div class="row mb-3">
+                                <div class="col-md-6">
+                                  <label>{{ form.nombre.label }}</label>
+                                  <input type="text" class="form-control" value="{{ user.get_username }}" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                  <label>{{ form.email.label }}</label>
+                                  <input type="text" class="form-control" value="{{ user.email }}" readonly>
+                                </div>
+                              </div>
+                              <div class="row mb-3">
+                                <div class="col-md-12">
+                                  <label>{{ form.contenido.label }}</label>
+                                  <textarea name="{{ form.contenido.name }}" class="form-control" rows="4" placeholder="{{ form.contenido.label }}"></textarea>
+                                </div>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" name="{{ form.activo.name }}" class="form-check-input" id="id_activo">
+                                <label class="form-check-label" for="id_activo">{{ form.activo.label }}</label>
+                              </div>
+                              <input class="btn btn-primary" type="submit" name="Enviar" value="Comentar">
+                            </form>
+                          {% else %}
+                          <p>No hay comentarios todavía.</p>
+                          {% endif %}
+                      {% else %}
                     <div class="text-center">
-                      <p>Inicia sesión para dejar un comentario.</p>
+                      <p>Inicia sesión como miembro o colaborador para dejar un comentario.</p>
                       <form method="post" action="{% url 'login' %}?next={{ request.path }}">
                         {% csrf_token %}
                         <input class="btn btn-primary" type="submit" value="Iniciar sesión">
                       </form>
                     </div>
-                  {% endif %}
+                    {% endif %}
+                 
 
                      
                       

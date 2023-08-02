@@ -68,6 +68,10 @@ urlpatterns = [
 
     ] #+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+
+handler404 = 'blog.views.custom_404'
+handler500 = 'blog.views.custom_500'
+
 if settings.DEBUG == True:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # ESTO, PARA QUE MIENTRAS ESTEMOS EN DESARROLLO (DEBUG==True), QUE BUSQUE IMAGENES EN MEDIA_URL LO VA A BUSCAR EN MEDIA_ROOT (MEDIA_ROOT = os.path.join(BASE_DIR, 'media'))

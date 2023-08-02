@@ -34,3 +34,9 @@ def contacto(request):
 
     #return render(request, 'nombre_de_la_plantilla.html', {'form': form})
     return render(request, 'contactos/formulario.html', data)
+
+def custom_404(request, exception):
+    return render(request, 'errors/404.html', status=404)    
+
+def custom_500(request):
+    return render(request, 'errors/500.html', status=500)
